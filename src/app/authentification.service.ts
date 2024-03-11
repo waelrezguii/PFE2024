@@ -1,0 +1,126 @@
+  import { Injectable } from '@angular/core';
+  import { EMPTY, Observable, catchError, map, of, switchMap, tap, throwError } from 'rxjs';
+  import { Router } from '@angular/router';
+  import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AuthentificationService {
+  isLoggedIn = false;
+
+    isLoggedInC = false;
+
+    constructor(private http: HttpClient, private router: Router) {
+      this.isLoggedIn = !!localStorage.getItem('isLoggedIn');
+      this.isLoggedInC = !!localStorage.getItem('isLoggedInC');
+    }
+
+    login(email: string, password: string): void {
+      const loginInfo = { email, mdp: password };
+
+      this.http.post<any>('http://localhost:8080/api/v1/admins/login', loginInfo)
+        .subscribe({
+          next: response => {
+            console.log('Login successful:', response);
+            localStorage.setItem('isLoggedIn', 'true');
+            this.isLoggedIn = true;
+          },
+          error: error => {
+            console.error('Login failed:', error);
+          }
+        });
+    }
+
+    loginC(email: string, password: string): Observable<any> {
+      const loginInfo = { email, mdp: password };
+    
+      return this.http.post<any>('http://localhost:8080/api/v1/utilisateurs/login', loginInfo)
+        .pipe(
+          map(response => {
+            if (response.user) {
+              this.isLoggedInC = true;
+              localStorage.setItem('isLoggedInC', 'true');
+              localStorage.setItem('user',response.user);
+              
+              localStorage.setItem('nom', response.user.nom);
+              localStorage.setItem('prenom', response.user.prenom);
+              localStorage.setItem('cin', response.user.cin);
+              this.router.navigate(['/portailCL']);
+              return response;
+            } else {
+              console.error('Login failed:', response);
+              return null;
+            }
+          })
+        );
+    }
+    
+    logout(): void {
+      localStorage.removeItem('isLoggedIn');
+      this.isLoggedIn = false;
+      this.router.navigate(['']);
+    }
+
+    logoutC(): void {
+      localStorage.removeItem('isLoggedInC');
+      this.isLoggedInC = false;
+      localStorage.removeItem('nom');
+      localStorage.removeItem('prenom');
+      this.router.navigate(['']);
+    }
+
+    registerClient(user: any): Observable<any> {
+      return this.http.post<any>('http://localhost:8080/api/v1/utilisateurs/register', user)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            let errorMessage = '';
+            if (error.error instanceof ErrorEvent) {
+              // A client-side or network error occurred. Handle it accordingly.
+              errorMessage = `An error occurred: ${error.error.message}`;
+            } else {
+              // The backend returned an unsuccessful response code.
+              // The response body may contain clues as to what went wrong,
+              errorMessage = `Backend returned code ${error.status}: ${error.message}`;
+            }
+            return throwError(() => new Error(errorMessage));
+          })
+        );
+    }
+    
+    verifyEmailToken(token: string): Observable<any> {
+      // Construct the URL with the token properly appended
+      const url = `http://localhost:8080/api/v1/utilisateurs/verify-email?token=${token}`;
+    
+      // Make the HTTP GET request to the URL
+      return this.http.get<any>(url).pipe(
+        map(response => {
+          console.log('Response from server:', response);
+          return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error occurred in verifyEmailToken method:', error);
+          if (error.status === 400 && error.error === 'Invalid token.') {
+            // Invalid token, show error message
+            return throwError(() => new Error('The verification token is invalid or has expired. Please try registering again.'));
+          } else {
+            console.error('An unexpected error occurred:', error.error.message || 'An unexpected error occurred');
+            // Return a user-friendly error message
+            return throwError(() => new Error('An error occurred while verifying your email. Please try again later.'));
+          }
+        })
+      );
+    }
+    getUserByCin(cin: any) {
+      const url = `http://localhost:8080/api/v1/utilisateurs/CIN/${cin}`;
+      return this.http.get<any>(url);
+        
+     
+    }
+    addAnnouncement(announcementData: any) {
+      // Make an HTTP POST request to add the announcement
+      return this.http.post('http://localhost:8080/api/v1/annoncesC/add', announcementData)
+    }
+   
+    
+  }

@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="image-container">
+        <img src="/assets/6009864.png" alt="Image">
+    </div>
+    <div class="form-container">
+       
+        <form (ngSubmit)="registerClient()">
+            <input type="email" name="email" placeholder="E-Mail" [(ngModel)]="user.email" required>
+            <input type="password" name="mdp" placeholder="Mot de passe" [(ngModel)]="user.mdp" required>
+            <input type="text" name="nom" placeholder="Nom" required [(ngModel)]="user.nom">
+            <input type="text" name="prenom" placeholder="Prenom" required [(ngModel)]="user.prenom">
+            <input type="text" name="cin" placeholder="Cin" required [(ngModel)]="user.cin">
+    
+            <p>Vous avez un compte? <a href="#" routerLink="/portailC" >Se connecter</a>
+            </p>
+    
+            <button type="submit">S'inscrire</button>
+            <div *ngIf="emailExists" class="alert alert-danger" role="alert">
+                This email address is already registered. Please use a different email.
+            </div>
+            <div *ngIf="cinExists" class="alert alert-danger" role="alert">
+                This CIN is already registered. Please use a different CIN.
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
+        </form>
+    </div>
+</div>

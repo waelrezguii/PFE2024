@@ -1,0 +1,39 @@
+<div class="d-flex align-items-center">
+  <select class="mr-2" [(ngModel)]="selectedD">
+    <option *ngFor="let dev of devises" [value]="dev">{{ dev }}</option>
+  </select>
+</div>
+
+<div class="d-flex align-items-center">
+  <select class="mr-2" [(ngModel)]="selectedB">
+    <option *ngFor="let bq of banques" [value]="bq">{{ bq }}</option>
+  </select>
+</div>
+
+<div class="d-flex align-items-center">
+  <select class="mr-2" [(ngModel)]="selectedMonth" (change)="fetchTabledata()">
+    <option value="1">January</option>
+    <option value="2">February</option>
+    <option value="3">March</option>
+    <option value="4">April</option>
+    <option value="5">May</option>
+    <option value="6">June</option>
+    <option value="7">July</option>
+    <option value="8">August</option>
+    <option value="9">September</option>
+    <option value="10">October</option>
+    <option value="11">November</option>
+    <option value="12">December</option>
+  </select>
+
+  <button type="button" class="btn btn-secondary" (click)="fetchTabledata()">Valider</button>
+</div>
+
+<div *ngIf="isDataLoaded">
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <h3>Line Chart for Achat and Vente</h3>
+  </div>
+  <div style="display: block">
+    <canvas id="myChart"></canvas>
+  </div>
+</div>

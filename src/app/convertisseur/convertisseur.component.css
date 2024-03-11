@@ -1,0 +1,44 @@
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .conversion-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .conversion-form label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .conversion-form input[type="number"],
+  .conversion-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .convert-button {
+    background-color: #181818;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .convert-button:hover {
+    background-color: #3a3a3a;
+  }
+  
+  .result {
+    margin-top: 20px;
+  }
+  

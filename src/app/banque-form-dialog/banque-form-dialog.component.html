@@ -1,0 +1,17 @@
+<h2>Add Banque</h2>
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="codeB">email:</label>
+    <input type="text" class="form-control" id="email" name="email" [(ngModel)]="banqueData.email" required>
+  </div>
+  <div class="form-group">
+    <label for="nombanque">Mot de passe:</label>
+    <input type="text" class="form-control" id="mdp" name="mdp" [(ngModel)]="banqueData.mdp" required>
+  </div>
+  <div class="form-group">
+    <label for="nombanque">Code Banque:</label>
+    <input type="text" class="form-control" id="codeb" name="codeb" [(ngModel)]="banqueData.codeB" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+</form>

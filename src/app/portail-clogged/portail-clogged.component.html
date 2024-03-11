@@ -1,0 +1,10 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div *ngIf="nom || prenom" class="fullname">
+        {{ getFullName() }}
+    </div>
+    <div class="buttons"> <!-- Add a container for the buttons -->
+        <button type="button" class="btn btn-secondary" routerLink="/gestionCompte">Gestion du compte</button>
+        <button type="button" class="btn btn-secondary" routerLink="/gestionAnnonces">Gestion des annonces</button>
+    </div>
+</div>

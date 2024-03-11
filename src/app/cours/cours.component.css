@@ -1,0 +1,4 @@
+/* Adjust the margin-right for the select element */
+select {
+    margin-right:70px; /* Adjust the value as needed */
+}

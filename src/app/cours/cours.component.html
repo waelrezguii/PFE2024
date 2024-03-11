@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+
+  <div class="container mt-3">
+    <div class="d-flex align-items-center">
+      <select class="mr-2" [(ngModel)]="nomd">
+        <option *ngFor="let nom of NomDevList" [value]="nom">{{ nom }}</option>
+      </select>
+  
+      <mat-form-field class="mr-2">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateInput)="selectedDate = formatDate($event.value)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="mr-2" style="margin-left: 20px;">
+        <input matInput type="number" placeholder="Enter sum of money"[(ngModel)]="money" >
+      </mat-form-field>
+      <button type="button" class="btn btn-secondary" (click)="fetchTableData()" style="margin-left: 20px;">Valider</button>
+    </div>
+  </div>
+  
+  <div class="container mt-3" *ngIf="isDataLoaded && tableData.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Codedev</th>
+          <th>Nomdevise</th>
+          <th>NomBanque</th>
+          <th>Achat</th>
+          <th>Vente</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of tableData">
+          <td>{{ item.codeDev }}</td>
+          <td>{{ item.nomdevise }}</td>
+          <td>{{ item.codeB }}</td>
+          <td>{{  calculateAchat(item) }}</td>
+          <td>{{  calculateVente(item) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+

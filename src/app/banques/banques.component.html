@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+
+  <div>
+  <h2>Liste des banques</h2>
+  <table>
+    <thead>
+        <tr>
+      <th>CodeB</th>
+      <th>Nom banque</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let banque of banques">
+        <td>{{ banque.codeB }}</td>
+        <td>{{ banque.nombanque }}</td>
+        <td *ngIf="isLoggedIn">
+          <button (click)="Ajouter()">Adhérer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
