@@ -17,6 +17,9 @@ import projet.pfe.repository.VerifTokenRepository;
 import projet.pfe.service.MailService;
 
 import java.util.*;
+import java.util.regex.Pattern;
+
+@CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/api/v1/utilisateurs")
@@ -35,17 +38,24 @@ public class UtilisateurController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody utilisateur user, HttpServletRequest request) {
-        // Set the verified field to false initially
-        user.setVerified(false);
-
         // Check if the email already exists
-        if (utilisateurRepository.findByEmail(user.getEmail())!= null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Email already exists"));
+        Optional<utilisateur> existingUserOptional = utilisateurRepository.findByEmail(user.getEmail());
+        if (existingUserOptional.isPresent()) {
+            utilisateur existingUser = existingUserOptional.get();
+            // Check if the email already exists
+            if (existingUser.getEmail().equals(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Email already exists"));
+            }
         }
+
 
         // Check if the Cin already exists
         if (utilisateurRepository.findById(user.getCin()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Cin already exists"));
+        }
+        String cinRegex = "\\d{8}"; // Regex for 8-digit numbers
+        if (!Pattern.matches(cinRegex, user.getCin())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Cin must be 8 digits"));
         }
 
         // Save the user first
@@ -75,7 +85,6 @@ public class UtilisateurController {
 
         return ResponseEntity.ok(response);
     }
-
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/CIN/{cin}")
     public utilisateur getUserByCin(@PathVariable String cin) {

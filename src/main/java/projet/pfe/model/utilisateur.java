@@ -29,9 +29,7 @@ public class utilisateur {
     private String mdp;
 @Column(nullable = false)
 private boolean verified;
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Annonces_Client> annoncesC;
+
     public utilisateur(String cin) {
         this.cin = cin;
     }

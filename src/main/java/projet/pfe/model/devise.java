@@ -20,6 +20,9 @@ public class devise {
     private String drapeau;
 @Column(name="libelle")
 private String libelle;
+    public devise(String Codedev) {
+        this.Codedev = Codedev;
+    }
     public String getCodedev() {
         return Codedev;
     }

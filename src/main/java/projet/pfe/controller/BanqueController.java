@@ -28,6 +28,7 @@ private BanqueRepository banqueRepository;
             banque savedBanque = banqueRepository.save(newBanque);
             return new ResponseEntity<>(savedBanque, HttpStatus.CREATED);
         } catch (Exception e) {
+            e.printStackTrace(); // Log the exception details
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

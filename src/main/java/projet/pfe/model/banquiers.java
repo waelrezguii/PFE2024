@@ -3,6 +3,7 @@ package projet.pfe.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,8 +14,9 @@ public class banquiers {
     private String email;
     @Column(name="mot_de_passe")
     private String mdp;
-    @ManyToOne
-    @JoinColumn(name="CodeB")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CodeB",referencedColumnName = "CodeB")
+
     private banque Banque;
 
     public String getEmail() {
@@ -40,16 +42,13 @@ public class banquiers {
     public void setBanque(banque banque) {
         Banque = banque;
     }
-    public String getCodeB(){
-        return Banque!=null? Banque.getCodeB() : null;
-    }
 
     @Override
     public String toString() {
         return "banquiers{" +
                 "email='" + email + '\'' +
                 ", mdp='" + mdp + '\'' +
-                ", CodeB=" + getCodeB() +
+                ", Banque=" + Banque +
                 '}';
     }
 }

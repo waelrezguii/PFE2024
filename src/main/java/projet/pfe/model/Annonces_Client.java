@@ -23,10 +23,36 @@ public class Annonces_Client {
     private Double montant;
     @Column(name="type")
     private String type;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(name="statut")
+    private boolean statut;
+    @ManyToOne
+    @JoinColumn(name="codedev")
+    private devise devise;
+    @ManyToOne
+
     @JoinColumn(name = "cin")
 
     private utilisateur utilisateur;
+    @PrePersist
+    public void prePersist() {
+        this.statut = false;
+    }
+
+    public boolean isStatut() {
+        return statut;
+    }
+
+    public void setStatut(boolean statut) {
+        this.statut = statut;
+    }
+
+    public projet.pfe.model.devise getDevise() {
+        return devise;
+    }
+
+    public void setDevise(projet.pfe.model.devise devise) {
+        this.devise = devise;
+    }
 
     public Long getIdA() {
         return idA;

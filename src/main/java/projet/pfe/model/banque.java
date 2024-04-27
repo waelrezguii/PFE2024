@@ -13,16 +13,17 @@ import lombok.NoArgsConstructor;
 @Table(name="banque")
 public class banque {
     @Id
-private String CodeB;
-@Column(name = "Nombanque")
+    private String CodeB;
+
+    @Column(name = "Nombanque")
     private String Nombanque;
 
     public String getCodeB() {
         return CodeB;
     }
 
-    public void setCodeB(String codeB) {
-        CodeB = codeB;
+    public void setCodeB(String CodeB) {
+        this.CodeB = CodeB;
     }
 
     public String getNombanque() {
@@ -35,9 +36,11 @@ private String CodeB;
 
     @Override
     public String toString() {
-        return "banque{" +
+        return "Banque{" +
                 "CodeB='" + CodeB + '\'' +
                 ", Nombanque='" + Nombanque + '\'' +
                 '}';
     }
 }
+
+
