@@ -30,6 +30,13 @@ import { ConvertisseurComponent } from './convertisseur/convertisseur.component'
 import { DeviseComponent } from './devise/devise.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { VerifComponent } from './verif/verif.component';
+import { CorpsGestionannoncesComponent } from './corps-gestionannonces/corps-gestionannonces.component';
+import { HistoriquesComponent } from './historiques/historiques.component';
+import { PortailBloggedComponent } from './portail-blogged/portail-blogged.component';
+import { ForumEveryoneComponent } from './forum-everyone/forum-everyone.component';
+import { PostDetailsComponent } from './post-details/post-details.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { PostFormDialogComponent } from './post-form-dialog/post-form-dialog.component';
 
 
 @NgModule({
@@ -53,6 +60,12 @@ import { VerifComponent } from './verif/verif.component';
     DeviseComponent,
     VerifyEmailComponent,
     VerifComponent,
+    CorpsGestionannoncesComponent,
+    HistoriquesComponent,
+    PortailBloggedComponent,
+    ForumEveryoneComponent,
+    PostDetailsComponent,
+    PostFormDialogComponent
 
   
   ],
@@ -66,7 +79,8 @@ import { VerifComponent } from './verif/verif.component';
     MatFormFieldModule,
     MatInputModule,
     NgChartsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   providers: [
     provideAnimationsAsync(),

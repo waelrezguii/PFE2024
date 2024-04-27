@@ -18,14 +18,37 @@ export class RegisterComponent implements OnDestroy {
   constructor(private authService: AuthentificationService, private router: Router) {}
 
   registerClient(): void {
+    if (!this.user.email) {
+      alert('Veuillez saisir une adresse e-mail.');
+      return;
+    }
+    if (!this.user.mdp) {
+      alert('Veuillez saisir un mot de passe.');
+      return;
+    }
+    if (!this.user.nom) {
+      alert('Veuillez saisir votre nom.');
+      return;
+    }
+    if (!this.user.prenom) {
+      alert('Veuillez saisir votre prénom.');
+      return;
+    }
+    if (!this.user.cin) {
+      alert('Veuillez saisir votre CIN.');
+      return;
+    }
+    if (!/^\d{8}$/.test(this.user.cin)) {
+      alert('Le CIN doit comporter exactement 8 chiffres.');
+      return;
+    }
+  
     this.emailExists = false;
     this.cinExists = false;
     this.registrationSubscription = this.authService.registerClient(this.user).subscribe({
       next: (response: any) => {
         console.log('Registration successful');
-        // Inform the user that an email has been sent for verification
         alert('An email has been sent to your inbox for verification. Please verify your email to complete the registration process.');
-        // Optionally, you can navigate the user to a different page or display a message
         this.router.navigate(['/portailC']);
       },
       error: (error: any) => {
@@ -42,6 +65,7 @@ export class RegisterComponent implements OnDestroy {
       }
     });
   }
+  
 
   ngOnDestroy(): void {
     if (this.registrationSubscription) {

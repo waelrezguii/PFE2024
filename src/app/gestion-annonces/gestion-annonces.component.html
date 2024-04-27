@@ -7,8 +7,8 @@
                 <label for="operationType">Type d'opération</label>
                 <select id="operationType" class="form-control" [(ngModel)]="annoncesData.type" name="type" required>
                     <option selected disabled>Type d'opération</option>
-                    <option value="achat">Achat</option>
-                    <option value="vente">Vente</option>
+                    <option value="Achat">Achat</option>
+                    <option value="Vente">Vente</option>
                 </select>
             </div>
             
@@ -16,7 +16,18 @@
                 <label for="montant">Montant</label>
                 <input type="number" id="montant" class="form-control" placeholder="Montant" [(ngModel)]="annoncesData.montant" name="montant" required>
             </div>
+            <div class="form-group">
+                <label for="operationType">Devise</label>
+                <select id="operationType" class="form-control" [(ngModel)]="annoncesData.devise" name="devise" required>
+                    <option selected disabled></option>
+                    <option value="978">EUR</option>
+                    <option value="840">USD</option>
+                    <option value="756">CHF</option>
+                    <option value="826">GBP</option>
+                    <option value="124">CAD</option>
 
+                </select>
+            </div>
             <button type="submit" class="convert-button">Ajouter</button>
         </form>
     </div>

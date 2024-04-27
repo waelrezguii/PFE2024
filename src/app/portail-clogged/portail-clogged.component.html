@@ -1,10 +1,75 @@
 <app-navbar></app-navbar>
-<div class="container">
-    <div *ngIf="nom || prenom" class="fullname">
-        {{ getFullName() }}
-    </div>
-    <div class="buttons"> <!-- Add a container for the buttons -->
-        <button type="button" class="btn btn-secondary" routerLink="/gestionCompte">Gestion du compte</button>
-        <button type="button" class="btn btn-secondary" routerLink="/gestionAnnonces">Gestion des annonces</button>
-    </div>
-</div>
+
+
+    <section class="bsb-service-7 py-5 py-xl-8">
+
+        <div class="container">
+          <div class="row justify-content-md-center">
+            <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+              <h3 class="fs-5 mb-2 text-secondary text-center text-uppercase"> {{ getFullName() }}</h3>
+              <h2 class="display-5 mb-5 mb-xl-9 text-center">
+                Nous proposons des services de haute qualité pour vous.</h2>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="container-fluid bg-light border shadow">
+                <div class="row">
+                  <div class="col-12 col-md-4 p-0">
+                    <div class="card border-0 bg-transparent">
+                      <div class="card-body text-center p-5">
+                        <img src="assets/imageedit_3_3039898644.png" alt="compte" class="bi bi-basket2-fill text-primary mb-4 img-fluid" style=" width: 84px; height: 84px;">
+        
+                        <h4 class="fw-bold text-uppercase mb-4">Gestion du compte</h4>
+                        <p class="mb-4 text-secondary">Accédez à la gestion complète de votre compte utilisateur.</p>
+                        <a href="" routerLink="/gestionCompte" class="fw-bold text-decoration-none link-primary">
+                          En savoir plus
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 p-0 border-top border-bottom border-start border-end">
+                    <div class="card border-0 bg-transparent">
+                      <div class="card-body text-center p-5">
+                        <img src="assets/imageedit_7_2356531947.png" alt="gestion annonce" class="bi bi-basket2-fill text-primary mb-4 img-fluid" style=" width: 84px; height: 84px;">
+        
+                        <h4 class="fw-bold text-uppercase mb-4">Gestion des annonces</h4>
+                        <p class="mb-4 text-secondary">
+                          Gérez et consultez toutes vos annonces.</p>
+                        <a href="" routerLink="/corps" class="fw-bold text-decoration-none link-primary">
+                          En savoir plus
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                          </svg> 
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 p-0">
+                    <div class="card border-0 bg-transparent">
+                      <div class="card-body text-center p-5">
+                        <img src="assets/imageedit_12_4877033314.png" alt="Convertisseur Image" class="bi bi-basket2-fill text-primary mb-4 img-fluid" style=" width: 84px; height: 84px;">
+        
+                        <h4 class="fw-bold text-uppercase mb-4">Forum</h4>
+                        <p class="mb-4 text-secondary">Notre forum qui permet les échanges entre les clients et les banques.</p>
+                        <a href="" routerLink="/ForumE" class="fw-bold text-decoration-none link-primary">
+                          En savoir plus
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </section>
+ 

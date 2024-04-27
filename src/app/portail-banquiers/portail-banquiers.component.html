@@ -1,1 +1,15 @@
-<p>portail-banquiers works!</p>
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="image-container">
+        <img src="/assets/banquier (1).png" alt="Image">
+    </div>
+    <div class="form-container">
+        <form (ngSubmit)="login()" >
+            <input type="email" name="email" placeholder="E-Mail" [(ngModel)]="email"  required>
+            <input type="password" name="mdp" placeholder="Mot de passe" [(ngModel)]="password"  required>
+
+            <button type="submit">Se connecter</button>
+
+        </form>
+    </div>
+</div>

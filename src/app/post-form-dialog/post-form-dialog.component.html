@@ -1,0 +1,10 @@
+<h2>Add Banque</h2>
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="taux">taux:</label>
+    <input type="text" class="form-control" id="taux" name="taux" [(ngModel)]="annoncesData.taux" required>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+</form>

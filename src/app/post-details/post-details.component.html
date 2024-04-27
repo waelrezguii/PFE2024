@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+
+<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+
+<div class="container">
+  <div *ngFor="let annonce of annoncesB" class="card row-hover pos-relative py-3 px-3 mb-3 border-primary border-top-0 border-right-0 border-bottom-0 rounded-0">
+    <div class="row align-items-center">
+      <div class="col-md-8 mb-3 mb-sm-0">
+        <h1>
+          <a href="#" class="text-primary">Taux : {{ annonce.taux }}</a>
+        </h1>
+        <h2>Banque : {{annonce.banquiers.banque.nombanque}}</h2>
+        <p class="text-sm"><span class="op-6">ID : </span> <a class="text-black" href="#">{{ annonce.idAB }}</a></p>
+      </div>
+      <div class="col-md-4 op-7" *ngIf="!isLoggedInB">
+        <div class="row text-center op-7">
+          <div class="col px-1"> <button class="btn btn-success mr-2" (click)="acceptAnnouncement()">Accepter</button></div>
+          <div class="col px-1"> <button class="btn btn-danger">Décliner</button></div>
+          <div class="col px-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoggedInB" class="container">
+  <div class="row justify-content-center mt-3">
+    <div class="col-md-2">
+      <button class="btn btn-primary btn-lg btn-block" (click)="Ajouter()">Ajouter Taux</button>
+    </div>
+  </div>
+</div>

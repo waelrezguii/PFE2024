@@ -16,6 +16,11 @@ import { GestionAnnoncesComponent } from './gestion-annonces/gestion-annonces.co
 import { ConvertisseurComponent } from './convertisseur/convertisseur.component';
 import { DeviseComponent } from './devise/devise.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { CorpsGestionannoncesComponent } from './corps-gestionannonces/corps-gestionannonces.component';
+import { HistoriquesComponent } from './historiques/historiques.component';
+import { PortailBloggedComponent } from './portail-blogged/portail-blogged.component';
+import { ForumEveryoneComponent } from './forum-everyone/forum-everyone.component';
+import { PostDetailsComponent } from './post-details/post-details.component';
 
 
 const routes: Routes = [
@@ -33,6 +38,12 @@ const routes: Routes = [
 {path:'convert',component:ConvertisseurComponent},
 {path:'devise',component:DeviseComponent},
 { path:'verify-email/:token', component: VerifyEmailComponent },
+{path:'corps',component:CorpsGestionannoncesComponent},
+{path:'historiques',component:HistoriquesComponent},
+{path:'portailBlogged',component:PortailBloggedComponent},
+{path:'ForumE',component:ForumEveryoneComponent},
+{path:'post/:id',component:PostDetailsComponent}
+
 
 ];
 

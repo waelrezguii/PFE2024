@@ -25,7 +25,7 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/convert" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Convertisseur</a>
                 </li>
-                <li *ngIf="!isLoggedIn && !isLoggedInC" class="nav-item">
+                <li *ngIf="!isLoggedIn && !isLoggedInC && !isLoggedInB" class="nav-item">
                     <a class="nav-link"routerLink="/administration" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Administration</a>
                 </li>
                 <li *ngIf="isLoggedIn" class="nav-item">
@@ -34,11 +34,17 @@
                 <li *ngIf="isLoggedInC" class="nav-item">
                     <a class="nav-link" (click)="logoutC()" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Logout</a>
                 </li>
-                <li class="nav-item" *ngIf="!isLoggedInC">
+                <li *ngIf="isLoggedInB" class="nav-item">
+                    <a class="nav-link" (click)="logoutB()" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Logout</a>
+                </li>
+                <li class="nav-item" *ngIf="!isLoggedInC && !isLoggedInB">
                     <a class="nav-link"routerLink="/forum" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Forum ventes et achats</a>
                 </li>
                 <li class="nav-item" *ngIf="isLoggedInC">
                     <a class="nav-link"routerLink="/portailCL" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Forum ventes et achats</a>
+                </li>
+                <li class="nav-item" *ngIf="isLoggedInB">
+                    <a class="nav-link"routerLink="/portailBlogged" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Forum ventes et achats</a>
                 </li>
             </ul>
         </div>

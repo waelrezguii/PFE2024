@@ -2,3 +2,8 @@
 select {
     margin-right:70px; /* Adjust the value as needed */
 }
+.table thead.custom-thead th {
+    background-color: black !important;
+    color: white !important;
+  }
+  

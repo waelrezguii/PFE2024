@@ -10,27 +10,36 @@
   isLoggedIn = false;
 
     isLoggedInC = false;
-
+    isLoggedInB=false;
     constructor(private http: HttpClient, private router: Router) {
       this.isLoggedIn = !!localStorage.getItem('isLoggedIn');
       this.isLoggedInC = !!localStorage.getItem('isLoggedInC');
+      this.isLoggedInB=!!localStorage.getItem('isLoggedInB');
     }
 
-    login(email: string, password: string): void {
-      const loginInfo = { email, mdp: password };
+   
+login(email: string, password: string): void {
+  const loginInfo = { email, mdp: password };
 
-      this.http.post<any>('http://localhost:8080/api/v1/admins/login', loginInfo)
-        .subscribe({
-          next: response => {
-            console.log('Login successful:', response);
-            localStorage.setItem('isLoggedIn', 'true');
-            this.isLoggedIn = true;
-          },
-          error: error => {
-            console.error('Login failed:', error);
-          }
+  this.http.post<any>('http://localhost:8080/api/v1/admins/login', loginInfo)
+    .subscribe({
+      next: response => {
+        console.log('Login successful:', response);
+        localStorage.setItem('isLoggedIn', 'true');
+        this.isLoggedIn = true;
+        // Redirect to the home page
+        this.router.navigateByUrl('').then(() => {
+          // Reload the current route
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate([this.router.url]);
         });
-    }
+      },
+      error: error => {
+        console.error('Login failed:', error);
+      }
+    });
+}
 
     loginC(email: string, password: string): Observable<any> {
       const loginInfo = { email, mdp: password };
@@ -59,7 +68,12 @@
     logout(): void {
       localStorage.removeItem('isLoggedIn');
       this.isLoggedIn = false;
-      this.router.navigate(['']);
+      this.router.navigateByUrl('').then(() => {
+        // Reload the current route
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([this.router.url]);
+      });
     }
 
     logoutC(): void {
@@ -67,7 +81,29 @@
       this.isLoggedInC = false;
       localStorage.removeItem('nom');
       localStorage.removeItem('prenom');
-      this.router.navigate(['']);
+      localStorage.removeItem('user')
+      localStorage.removeItem('cin')
+
+      this.router.navigateByUrl('').then(() => {
+        // Reload the current route
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([this.router.url]);
+      });
+    } 
+    logoutB(): void {
+      localStorage.removeItem('isLoggedInB');
+      this.isLoggedInB = false;
+      localStorage.removeItem('user2');
+
+      localStorage.removeItem('email');
+      localStorage.removeItem('codeB');
+      this.router.navigateByUrl('').then(() => {
+        // Reload the current route
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([this.router.url]);
+      });
     }
 
     registerClient(user: any): Observable<any> {
@@ -121,6 +157,36 @@
       // Make an HTTP POST request to add the announcement
       return this.http.post('http://localhost:8080/api/v1/annoncesC/add', announcementData)
     }
-   
+    getBanques(): Observable<any[]> {
+      return this.http.get<any[]>('http://localhost:8080/api/v1/banque/affBanques')
+        .pipe(
+          tap(response => {
+            localStorage.setItem('banque', JSON.stringify(response));
+          })
+        );
+    }
+    loginB(email: string, password: string): Observable<any> {
+      const loginInfo = { email, mdp: password };
     
+      return this.http.post<any>('http://localhost:8080/api/v1/banquiers/loginB', loginInfo)
+        .pipe(
+          map(response => {
+            if (response.user) {
+              this.isLoggedInB = true;
+              localStorage.setItem('isLoggedInB', 'true');
+              localStorage.setItem('user2', JSON.stringify(response.user));
+              
+              localStorage.setItem('email', response.user.email);
+              localStorage.setItem('codeB', response.user.codeB);
+              console.log(response);
+              
+              this.router.navigate(['/portailBlogged']);
+              return response;
+            } else {
+              console.error('Login failed:', response);
+              return null;
+            }
+          })
+        );
+    }
   }

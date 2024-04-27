@@ -9,12 +9,13 @@ import { AuthentificationService } from '../authentification.service';
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   isLoggedInC: boolean = false;
-
+isLoggedInB:boolean=false;
   constructor(private authService: AuthentificationService) {}
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn;
     this.isLoggedInC=this.authService.isLoggedInC;
+    this.isLoggedInB=this.authService.isLoggedInB;
   }
 
   logout(): void {
@@ -24,5 +25,9 @@ export class NavbarComponent implements OnInit {
   logoutC(): void {
     this.authService.logoutC();
     this.isLoggedInC = false;
+  }
+  logoutB():void{
+    this.authService.logoutB();
+    this.isLoggedInB=false;
   }
 }

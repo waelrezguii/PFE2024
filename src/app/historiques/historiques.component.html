@@ -1,0 +1,25 @@
+<app-navbar></app-navbar>
+<div class="container mt-3">
+    <h2 class="text-center">Historique des annonces</h2>
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+
+    <div class="container">
+      <div *ngFor="let annonce of annonces" class="card row-hover pos-relative py-3 px-3 mb-3 border-primary border-top-0 border-right-0 border-bottom-0 rounded-0">
+        <div class="row align-items-center">
+          <div class="col-md-8 mb-3 mb-sm-0">
+            <h1>
+              <a href="#" class="text-primary">Type : {{ annonce.type }}</a>
+            </h1>
+            <h2>Montant : {{annonce.montant}}</h2>
+            <h2>Devise : {{annonce.devise.nomdevise}}</h2>
+            <p class="text-sm"><span class="op-6">ID : </span> <a class="text-black" href="#">{{ annonce.idA }}</a></p>
+          </div>
+          <div class="col-md-4 text-md-right">
+            <ng-container *ngIf="!annonce.statut; else closedAnnouncement">
+              <p class="text-success font-weight-bold text-color">Cette annonce est ouverte</p>
+            </ng-container>
+            <ng-template #closedAnnouncement>
+              <p class="text-danger font-weight-bold">Cette annonce est fermée</p>
+            </ng-template>
+          </div>
+  </div>
