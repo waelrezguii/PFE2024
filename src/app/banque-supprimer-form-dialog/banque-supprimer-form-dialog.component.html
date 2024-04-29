@@ -1,0 +1,15 @@
+<form [formGroup]="banqueForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Select Banque Code</mat-label>
+      <mat-select formControlName="codeB">
+        <mat-option *ngFor="let banque of banques" [value]="banque.codeB">
+          {{ banque.codeB }}
+        </mat-option>
+      </mat-select>
+     
+    </mat-form-field>
+  </form>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button type="submit" >Delete</button>
+  </div>
