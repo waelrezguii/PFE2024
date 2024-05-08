@@ -1,6 +1,8 @@
 package projet.pfe.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,9 +19,12 @@ public class cours {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name="Date_cours")
+    @CsvDate("yyyy-MM-dd")
+    @CsvBindByName(column = "date_cours")
     private LocalDate date_cours;
     @ManyToOne
     @JoinColumn(name="CodeB")
+
     private banque Banque;
     @ManyToOne
     @JoinColumn(name = "Codedev")

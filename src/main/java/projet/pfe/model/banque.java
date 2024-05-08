@@ -16,7 +16,7 @@ public class banque {
     private String CodeB;
 
     @Column(name = "Nombanque")
-    private String Nombanque;
+    private String nombanque;
 
     public String getCodeB() {
         return CodeB;
@@ -27,18 +27,18 @@ public class banque {
     }
 
     public String getNombanque() {
-        return Nombanque;
+        return nombanque;
     }
 
     public void setNombanque(String nombanque) {
-        Nombanque = nombanque;
+        this.nombanque = nombanque;
     }
 
     @Override
     public String toString() {
         return "Banque{" +
                 "CodeB='" + CodeB + '\'' +
-                ", Nombanque='" + Nombanque + '\'' +
+                ", Nombanque='" + nombanque + '\'' +
                 '}';
     }
 }

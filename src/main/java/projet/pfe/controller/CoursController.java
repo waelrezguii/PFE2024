@@ -1,12 +1,24 @@
 package projet.pfe.controller;
 
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import projet.pfe.model.banque;
 import projet.pfe.model.cours;
+import projet.pfe.model.devise;
+import projet.pfe.repository.BanqueRepository;
 import projet.pfe.repository.CoursRepository;
+import projet.pfe.repository.DeviseRepository;
+import projet.pfe.service.CoursImportService;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,6 +27,12 @@ import java.util.List;
 public class CoursController {
     @Autowired
     private CoursRepository coursRepository;
+    @Autowired
+    private BanqueRepository banqueRepository;
+    @Autowired
+    private DeviseRepository deviseRepository;
+    @Autowired
+    private CoursImportService coursImportService;
     @CrossOrigin(origins = "http://localhost:4200")
 
     @GetMapping("/all")
@@ -81,4 +99,17 @@ public class CoursController {
 
 
     }
-}
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/uploadCSV")
+    public String uploadCoursCSV(@RequestParam("file") MultipartFile file) {
+        try {
+            coursImportService.importCSV(file);
+            return "CSV data inserted successfully!";
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+    }
+
+
+

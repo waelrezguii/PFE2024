@@ -1,8 +1,10 @@
 package projet.pfe.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import projet.pfe.model.banque;
 import projet.pfe.model.devise;
 import projet.pfe.repository.DeviseRepository;
 
@@ -26,5 +28,42 @@ public class DeviseController {
         Optional<devise> optionalDevise = deviseRepository.findById(Codedev);
         return optionalDevise.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @CrossOrigin(origins = "http://localhost:4200")
+@PostMapping("/ajouterDevise")
+    public ResponseEntity<?> addDev(@RequestBody devise newdev) {
+       try{
+boolean CodedevExists=deviseRepository.existsById(newdev.getCodedev());
+boolean NomdeviseExists=deviseRepository.existsByNomdevise(newdev.getNomdevise());
+boolean drapeauExists=deviseRepository.existsByDrapeau(newdev.getDrapeau());
+boolean libelleExists=deviseRepository.existsByLibelle(newdev.getLibelle());
+           if (CodedevExists && NomdeviseExists && drapeauExists && libelleExists) {
+               // Both CodeB and Nombanque already exist
+               return ResponseEntity
+                       .badRequest()
+                       .body("Error: La devise existe!");
+           } else if (CodedevExists) {
+               // CodeB already exists
+               return ResponseEntity
+                       .badRequest()
+                       .body("Error: Le code du devise existe!");
+           } else if (drapeauExists) {
+               // Nombanque already exists
+               return ResponseEntity
+                       .badRequest()
+                       .body("Error: Le drapeau du devise existe!");
+           } else if (libelleExists) {
+               return ResponseEntity
+                       .badRequest()
+                       .body("Error: Le libelle du devise existe!");
+           }
+       devise savedDevise=deviseRepository.save(newdev);
+           return ResponseEntity.ok("La devise a été ajoutée avec succès!");
+       }catch (Exception e) {
+           e.printStackTrace(); // Log the exception details
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body("Error: " + e.getMessage());
+       }
+    }
 
-}
+    }

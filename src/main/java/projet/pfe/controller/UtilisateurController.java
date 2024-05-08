@@ -9,9 +9,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import projet.pfe.model.Annonces_Client;
+import projet.pfe.model.PasswordResetToken;
 import projet.pfe.model.VerificationToken;
 import projet.pfe.model.utilisateur;
+import projet.pfe.repository.PasswordResetTokenRepository;
 import projet.pfe.repository.UtilisateurRepository;
 import projet.pfe.repository.VerifTokenRepository;
 import projet.pfe.service.MailService;
@@ -35,10 +36,13 @@ public class UtilisateurController {
     private JavaMailSender javaMailSender;
     @Autowired
     private MailService mailService;
+@Autowired
+private PasswordResetTokenRepository passwordResetTokenRepository;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody utilisateur user, HttpServletRequest request) {
         // Check if the email already exists
+        String msg="votre compte a été créé avec succès";
         Optional<utilisateur> existingUserOptional = utilisateurRepository.findByEmail(user.getEmail());
         if (existingUserOptional.isPresent()) {
             utilisateur existingUser = existingUserOptional.get();
@@ -82,7 +86,7 @@ public class UtilisateurController {
         // Return the token in the response object
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
-
+response.put("Message",msg);
         return ResponseEntity.ok(response);
     }
     @CrossOrigin(origins = "http://localhost:4200")
@@ -158,6 +162,37 @@ public class UtilisateurController {
             response.put("message", "User not found");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+    }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
+        Optional<utilisateur> userOptional = utilisateurRepository.findByEmail(email);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "User not found"));
+        }
+        utilisateur user = userOptional.get();
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken resetToken = new PasswordResetToken();
+        resetToken.setToken(token);
+        resetToken.setUtilisateur(user);
+        resetToken.calculateExpiryDate(); // Set the expiry date
+        passwordResetTokenRepository.save(resetToken);
+        mailService.sendPasswordResetEmail(user, token);
+        return ResponseEntity.ok(Map.of("message", "Reset password email sent"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam("token") String token, @RequestParam("password") String newPassword) {
+        Optional<PasswordResetToken> resetToken = passwordResetTokenRepository.findByToken(token);
+        if (!resetToken.isPresent() || resetToken.get().isExpired()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid or expired token"));
+        }
+        utilisateur user = resetToken.get().getUtilisateur();
+        user.setMdp(newPassword);
+        utilisateurRepository.save(user);
+        passwordResetTokenRepository.delete(resetToken.get());
+        return ResponseEntity.ok(Map.of("message", "Password reset successfully"));
     }
 
 }

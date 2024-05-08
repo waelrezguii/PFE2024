@@ -24,4 +24,15 @@ public class MailService {
 
         mailSender.send(message);
     }
+    public void sendPasswordResetEmail(utilisateur user, String token) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("no-reply@esen.tn");
+        message.setTo(user.getEmail());
+        message.setSubject("Password Reset Request");
+        message.setText("To reset your password, click the link below:\n" +
+                "http://localhost:4200/resetpassword/" + token);
+
+        mailSender.send(message);
+    }
+
 }
