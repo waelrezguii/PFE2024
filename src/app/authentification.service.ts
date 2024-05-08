@@ -8,7 +8,7 @@
   })
   export class AuthentificationService {
   isLoggedIn = false;
-
+  private baseUrl = 'http://localhost:8080/api/v1/utilisateurs';
     isLoggedInC = false;
     isLoggedInB=false;
     constructor(private http: HttpClient, private router: Router) {
@@ -189,4 +189,29 @@ login(email: string, password: string): void {
           })
         );
     }
+    forgotPassword(email: string): Observable<any> {
+      // Construct the URL with the email query parameter
+      const url = `${this.baseUrl}/forgot-password?email=${encodeURIComponent(email)}`;
+  
+      // Make the HTTP POST request
+      return this.http.post(url, {}).pipe(
+          catchError((error: HttpErrorResponse) => {
+              const errorMessage = `Error: ${error.status} - ${error.error.error}: ${error.message}`;
+              console.error('Failed to send forgot password request:', errorMessage);
+              return throwError(() => new Error(errorMessage));
+          })
+      );
+  }
+  
+  
+  resetPassword(token: string, password: string): Observable<any> {
+    // Construct the URL with the token and password as query parameters
+    const url = `${this.baseUrl}/reset-password?token=${encodeURIComponent(token)}&password=${encodeURIComponent(password)}`;
+    return this.http.post(url, {}).pipe(
+        catchError((error: HttpErrorResponse) => {
+            console.error('Failed to reset password:', error);
+            return throwError(() => new Error('Failed to reset password'));
+        })
+    );
+  }
   }

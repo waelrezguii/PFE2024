@@ -21,8 +21,8 @@ import { HistoriquesComponent } from './historiques/historiques.component';
 import { PortailBloggedComponent } from './portail-blogged/portail-blogged.component';
 import { ForumEveryoneComponent } from './forum-everyone/forum-everyone.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
-
-
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 const routes: Routes = [
   {path:'',component:AccueilComponent},
   { path: 'banques', component: BanquesComponent },
@@ -42,8 +42,9 @@ const routes: Routes = [
 {path:'historiques',component:HistoriquesComponent},
 {path:'portailBlogged',component:PortailBloggedComponent},
 {path:'ForumE',component:ForumEveryoneComponent},
-{path:'post/:id',component:PostDetailsComponent}
-
+{path:'post/:id',component:PostDetailsComponent},
+{path:'forget',component:ForgotPasswordComponent},
+{path:'resetpassword/:token',component:ResetPasswordComponent}
 
 ];
 

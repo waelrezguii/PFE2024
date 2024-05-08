@@ -41,6 +41,9 @@ import { PostDetailsComponent } from './post-details/post-details.component';
 import { PostFormDialogComponent } from './post-form-dialog/post-form-dialog.component';
 import { BanqueajoutFormDialogComponent } from './banqueajout-form-dialog/banqueajout-form-dialog.component';
 import { BanqueSupprimerFormDialogComponent } from './banque-supprimer-form-dialog/banque-supprimer-form-dialog.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AjoutdevComponent } from './ajoutdev/ajoutdev.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,10 @@ import { BanqueSupprimerFormDialogComponent } from './banque-supprimer-form-dial
     PostDetailsComponent,
     PostFormDialogComponent,
     BanqueajoutFormDialogComponent,
-    BanqueSupprimerFormDialogComponent
+    BanqueSupprimerFormDialogComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    AjoutdevComponent
   ],
   imports: [
     BrowserModule,

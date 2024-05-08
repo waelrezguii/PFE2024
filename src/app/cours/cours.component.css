@@ -6,4 +6,21 @@ select {
     background-color: black !important;
     color: white !important;
   }
+  .card {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card-header {
+    border-bottom: 2px solid #dee2e6;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
   
