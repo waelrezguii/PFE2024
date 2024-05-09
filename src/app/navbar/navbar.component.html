@@ -37,7 +37,7 @@
                 <li *ngIf="isLoggedInB" class="nav-item">
                     <a class="nav-link" (click)="logoutB()" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Logout</a>
                 </li>
-                <li class="nav-item" *ngIf="!isLoggedInC && !isLoggedInB">
+                <li class="nav-item" *ngIf="!isLoggedInC && !isLoggedInB ">
                     <a class="nav-link"routerLink="/forum" style="padding-left: 25px; padding-right: 25px; color: rgb(84, 83, 83);">Forum ventes et achats</a>
                 </li>
                 <li class="nav-item" *ngIf="isLoggedInC">

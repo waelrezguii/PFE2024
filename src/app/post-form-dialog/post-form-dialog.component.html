@@ -1,9 +1,16 @@
-<form (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="taux">taux:</label>
-    <input type="text" class="form-control" id="taux" name="taux" [(ngModel)]="annoncesData.taux" required>
-  </div>
-  
-  <button type="submit" class="btn btn-primary">Submit</button>
-  <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-</form>
+<h1 mat-dialog-title>Ajouter Offre</h1>
+<div mat-dialog-content>
+  <form>
+    <mat-form-field class="example-full-width">
+      <mat-label>Taux</mat-label>
+      <input matInput type="number" [(ngModel)]="taux" name="taux">
+    </mat-form-field>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-button (click)="onSubmit()" cdkFocusInitial>Ajouter</button>
+</div>

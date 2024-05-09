@@ -7,7 +7,7 @@
           <div class="card-body">
             <h1 class="card-title">Portail Client</h1>
             <p class="card-text">Espace Client pour les achats et les ventes des devises.</p>
-            <a href="#" routerLink="/portailC" class="btn btn-primary">Accéder</a>
+            <a href="#" routerLink="/portailC" class="btn btn-primary" *ngIf="!isLoggedIn">Accéder</a>
           </div>
         </div>
       </div>
@@ -17,7 +17,7 @@
           <div class="card-body">
             <h1 class="card-title">Portail Banquiers</h1>
             <p class="card-text">Espace banque pour se connecter avec les clients.</p>
-            <a href="#" routerLink="/portailB" class="btn btn-primary">Accéder</a>
+            <a href="#" routerLink="/portailB" class="btn btn-primary" *ngIf="!isLoggedIn">Accéder</a>
           </div>
         </div>
       </div>
