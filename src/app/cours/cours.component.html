@@ -9,7 +9,7 @@
 
     <div class="col-md-3">
       <mat-form-field class="w-100">
-        <mat-label>Choose a date</mat-label>
+        <mat-label>Sélectionner la date</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateInput)="selectedDate = formatDate($event.value)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -18,7 +18,7 @@
 
     <div class="col-md-3">
       <mat-form-field class="w-100">
-        <input matInput type="number" placeholder="Enter sum of money" [(ngModel)]="money">
+        <input matInput type="number" placeholder="Entrer la somme d'argent" [(ngModel)]="money">
       </mat-form-field>
     </div>
 
@@ -39,8 +39,11 @@
               <th scope="col">Nom devise</th>
               <th scope="col">Drapeau</th>
               <th scope="col">Nom Banque</th>
-              <th scope="col">Achat</th>
-              <th scope="col">Vente</th>
+              <th scope="col">Taux d'achat * la somme d'argent</th>
+              <th scope="col">Taux de vente * la somme d'argent</th>
+              <th scope="col">Taux d'achat</th>
+              <th scope="col">Taux de vente </th>
+
             </tr>
           </thead>
           <tbody>
@@ -51,6 +54,9 @@
               <td>{{ item.codeB }}</td>
               <td>{{ calculateAchat(item) }}</td>
               <td>{{ calculateVente(item) }}</td>
+              <td>{{ item.achat }}</td>
+              <td>{{ item.vente }}</td>
+
             </tr>
           </tbody>
         </table>
@@ -77,4 +83,3 @@
     </div>
   </div>
 </div>
-

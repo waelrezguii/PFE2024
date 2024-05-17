@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ConverterService {
   private apiKey = '3351ee7c6b947722464f05249015ce44';
-  private apiUrl = 'http://data.fixer.io/api/latest';
+  private apiUrl = 'http://data.fixer.io/api/latsest';
   constructor(private http: HttpClient) { }
   getExchangeRates(): Observable<any> {
     const url = `${this.apiUrl}?access_key=${this.apiKey}`;

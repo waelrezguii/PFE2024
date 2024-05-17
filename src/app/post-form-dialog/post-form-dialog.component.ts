@@ -60,7 +60,7 @@ export class PostFormDialogComponent implements OnInit {
     this.annoncesData.taux = this.taux;
 
     this.httpclient
-      .post('http://localhost:8080/api/v1/annonces-banquiers/add', this.annoncesData)
+      .post('http://localhost:8080/api/v1/annoncesB/add', this.annoncesData)
       .subscribe({
         next: (response) => {
           console.log('Success:', response);

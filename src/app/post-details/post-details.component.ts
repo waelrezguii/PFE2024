@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthentificationService } from '../authentification.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,7 +21,8 @@ export class PostDetailsComponent implements OnInit {
     private httpclient: HttpClient,
     private authService: AuthentificationService,
     public dialog: MatDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +60,8 @@ export class PostDetailsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log('Announcement accepted:', response);
-          // Refresh the list of announcements or perform any other necessary actions
+          alert('L\'annonce a été acceptée avec réussite.');
+          this.router.navigate(['/ForumE']);
         },
         error: (error) => {
           console.error('Error accepting announcement:', error);

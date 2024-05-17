@@ -3,39 +3,41 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { devise } from './devise1.module';
 import { AuthentificationService } from '../authentification.service';
+
 @Component({
   selector: 'app-cours',
   templateUrl: './cours.component.html',
   styleUrls: ['./cours.component.css']
 })
 export class CoursComponent implements OnInit {
-  NomDevList: string[]=[];
-  CodeDevList: devise | null = null; // Change the type to array of objects
-  codeBParameter: string = ''; 
-  nomd: string = ''; 
-  selectedDate: string = ''; 
-  tableData:any[]=[];
+  NomDevList: string[] = [];
+  CodeDevList: devise | null = null;
+  codeBParameter: string = '';
+  nomd: string = '';
+  selectedDate: string = '';
+  tableData: any[] = [];
   codedev: string = '';
-  drapeau:any;
-  isDataLoaded:boolean=false;
-  money:number=0;
+  drapeau: any;
+  isDataLoaded: boolean = false;
+  money: number = 0;
   selectedFile: File | null = null;
   isLoggedIn: boolean = false;
 
-  constructor(private http: HttpClient,private datePipe: DatePipe,private authService:AuthentificationService){
-
-  }
+  constructor(
+    private http: HttpClient,
+    private datePipe: DatePipe,
+    private authService: AuthentificationService
+  ) {}
 
   ngOnInit(): void {
-   this.getNomDevList();
-   this.isLoggedIn = this.authService.isLoggedIn;
-
+    this.getNomDevList();
+    this.isLoggedIn = this.authService.isLoggedIn;
   }
 
-  getNomDevList():void{
+  getNomDevList(): void {
     const url = `http://localhost:8080/api/v1/Cours/NomDevList`;
-    this.http.get<string[]>(url).subscribe(data=>{
-      this.NomDevList=data;
+    this.http.get<string[]>(url).subscribe(data => {
+      this.NomDevList = data;
     });
   }
 
@@ -43,18 +45,43 @@ export class CoursComponent implements OnInit {
     return this.datePipe.transform(date, 'yyyy-MM-dd') || '';
   }
 
-  fetchTableData(): void {
-    if (this.nomd && this.selectedDate) {
-      const url1 = `http://localhost:8080/api/v1/Cours/byNomdevAndDate/${this.nomd}/${this.selectedDate}`;
-      this.http.get<any[]>(url1).subscribe(data => {
-        this.tableData = data;
-        this.isDataLoaded = true;
-        if (data.length > 0) {
-          this.codedev = data[0].codeDev; // Access codedev from the first element
-          this.getCodeDev();
-        }
-      });
+  validateInputs(): boolean {
+    const today = this.formatDate(new Date());
+
+    // Validate empty fields and negative values
+    if (!this.nomd || !this.selectedDate) {
+      alert('Veuillez remplir tous les champs correctement.');
+      return false;
     }
+
+    if (this.money <= 0) {
+      alert('La somme d\'argent ne doit pas être négative ou égale à zéro.');
+      return false;
+    }
+
+    // Validate date is not in the future
+    if (this.selectedDate > today) {
+      alert('La date sélectionnée ne doit pas dépasser la date du jour.');
+      return false;
+    }
+
+    return true;
+  }
+
+  fetchTableData(): void {
+    if (!this.validateInputs()) {
+      return;
+    }
+
+    const url1 = `http://localhost:8080/api/v1/Cours/byNomdevAndDate/${this.nomd}/${this.selectedDate}`;
+    this.http.get<any[]>(url1).subscribe(data => {
+      this.tableData = data;
+      this.isDataLoaded = true;
+      if (data.length > 0) {
+        this.codedev = data[0].codeDev; // Access codedev from the first element
+        this.getCodeDev();
+      }
+    });
   }
 
   getCodeDev(): void {
@@ -69,12 +96,12 @@ export class CoursComponent implements OnInit {
   }
 
   calculateAchat(item: any): number {
-    return item.achat * this.money;
+    return parseFloat((item.achat * this.money).toFixed(2));
   }
 
   calculateVente(item: any): number {
-    return item.vente * this.money;
-  }
+    return parseFloat((item.vente * this.money).toFixed(2));
+    }
 
   // New method for file upload
   onFileSelected(event: any): void {
@@ -86,7 +113,7 @@ export class CoursComponent implements OnInit {
 
   uploadCSV(): void {
     if (!this.selectedFile) {
-      alert('Please select a CSV file to upload.');
+      alert('Veuillez sélectionner un fichier CSV à télécharger.');
       return;
     }
 
@@ -101,7 +128,7 @@ export class CoursComponent implements OnInit {
         alert(response);
       }, error => {
         console.error(error);
-        alert('Error uploading file. Please try again.');
+        alert('Erreur lors du téléchargement du fichier. Veuillez réessayer.');
       });
   }
 }

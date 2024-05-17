@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { ConverterService } from '../converter.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-convertisseur',
   templateUrl: './convertisseur.component.html',
-  styleUrl: './convertisseur.component.css'
+  styleUrls: ['./convertisseur.component.css']
 })
 export class ConvertisseurComponent implements OnInit {
   exchangeRates: any;
   conversionForm: FormGroup;
-  convertedValue: number = 0; // Initialize convertedValue here
+  convertedValue: number = 0;
 
   constructor(private converter: ConverterService, private formBuilder: FormBuilder) {
     this.conversionForm = this.formBuilder.group({
-      amount: [null],
-      fromCurrency: ['EUR'],
-      toCurrency: ['USD']
+      amount: [null, [Validators.required, Validators.min(0.01)]],
+      fromCurrency: ['EUR', Validators.required],
+      toCurrency: ['USD', Validators.required]
     });
   }
 
@@ -36,13 +36,23 @@ export class ConvertisseurComponent implements OnInit {
   }
 
   convertCurrency() {
+    if (this.conversionForm.invalid) {
+      alert('Veuillez remplir tous les champs correctement.');
+      return;
+    }
+  
     const amount = this.conversionForm.value.amount;
     const fromCurrency = this.conversionForm.value.fromCurrency;
     const toCurrency = this.conversionForm.value.toCurrency;
-
+  
     const fromRate = this.exchangeRates.rates[fromCurrency];
     const toRate = this.exchangeRates.rates[toCurrency];
-
-    this.convertedValue = (amount / fromRate) * toRate;
+  
+    if (fromRate && toRate) {
+      this.convertedValue = parseFloat(((amount / fromRate) * toRate).toFixed(2));
+    } else {
+      alert('La conversion n\'est pas disponible pour ces devises.');
+    }
   }
+  
 }
