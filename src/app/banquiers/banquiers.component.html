@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div class="container mt-4" *ngIf="isDataLoaded">
+    <h2 class="mb-3">Liste des Banquiers</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Email</th>
+            <th>Code Banque</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let banquier of banquiers">
+            <td>{{ banquier.email }}</td>
+            <td>{{ banquier.banque.codeB }}</td>
+            <td>
+              <button (click)="deleteBanquier(banquier.email)" class="btn btn-danger" title="Delete">
+                Supprimer <i class="bi bi-trash-fill"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="!isDataLoaded" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  

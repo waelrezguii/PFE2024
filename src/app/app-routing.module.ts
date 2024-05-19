@@ -23,6 +23,8 @@ import { ForumEveryoneComponent } from './forum-everyone/forum-everyone.componen
 import { PostDetailsComponent } from './post-details/post-details.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { BanquiersComponent } from './banquiers/banquiers.component';
+import { ListeclientsComponent } from './listeclients/listeclients.component';
 const routes: Routes = [
   {path:'',component:AccueilComponent},
   { path: 'banques', component: BanquesComponent },
@@ -44,7 +46,9 @@ const routes: Routes = [
 {path:'ForumE',component:ForumEveryoneComponent},
 {path:'post/:id',component:PostDetailsComponent},
 {path:'forget',component:ForgotPasswordComponent},
-{path:'resetpassword/:token',component:ResetPasswordComponent}
+{path:'resetpassword/:token',component:ResetPasswordComponent},
+{path:'banquiers',component:BanquiersComponent},
+{path:'clients',component:ListeclientsComponent}
 
 ];
 
