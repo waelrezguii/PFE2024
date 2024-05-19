@@ -25,23 +25,28 @@ public class AnnoncesBController {
     private AnnoncesCRepository annoncesCRepository;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
-    public ResponseEntity<Annonces_Banquiers> addAnnonce(@RequestBody Annonces_Banquiers annoncesData) {
+    public ResponseEntity<?> addOffer(@RequestBody Annonces_Banquiers annoncesData) {
         String email = annoncesData.getBanquiers().getEmail();
         Long id = annoncesData.getAnnoncesClient().getIdA();
+
+        if (annoncesData.getTaux() == null || annoncesData.getTaux() <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Le taux ne doit pas être nul, négatif ou égal à zéro");
+        }
 
         // Check if the banquier has already added two offers for the same annonces client idA
         int numberOfOffers = annoncesBRepository.countByBanquiers_EmailAndAnnoncesClient_IdA(email, id);
         if (numberOfOffers >= 2) {
             // If the banquier has already added two offers, return an error response
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null); // You can customize the response body as needed
+                    .body("Le banquier a déjà ajouté deux offres pour cette annonce client");
         }
 
         // If the banquier has not added two offers yet, proceed with adding the new offer
         banquiers banquiers = banquiersRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Banquier with email " + email + " not found"));
         Annonces_Client annoncesClient = annoncesCRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Id " + id + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Annonce client with id " + id + " not found"));
         annoncesData.setBanquiers(banquiers);
         annoncesData.setAnnoncesClient(annoncesClient);
         Annonces_Banquiers savedAnnonce = annoncesBRepository.save(annoncesData);

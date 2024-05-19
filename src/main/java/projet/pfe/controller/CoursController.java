@@ -6,6 +6,8 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import projet.pfe.model.banque;
@@ -77,13 +79,16 @@ public class CoursController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
         @GetMapping("/byNomdevAndDate/{nomdev}/{date}")
-    public List<cours>getCoursbyNomDevandDate(@PathVariable String nomdev,@PathVariable LocalDate date){
-        return coursRepository.findByDevise_NomdeviseAndDate_cours(nomdev,date);
-    }
-    @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/byNomDevAndCodeB/{nomdev}/{codeb}")
-    public List<cours>getCoursByNomDevAndCodeB(@PathVariable String nomdev,@PathVariable String codeb){
-        return coursRepository.findByDevise_NomdeviseAndBanque_CodeB(nomdev,codeb);
+    public ResponseEntity<?> getCoursbyNomDevandDate(@PathVariable String nomdev, @PathVariable LocalDate date) {
+        LocalDate today = LocalDate.now();
+        if (date.isAfter(today)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("La date sélectionnée ne doit pas dépasser la date du jour");
+        }
+
+        List<cours> result = coursRepository.findByDevise_NomdeviseAndDate_cours(nomdev, date);
+        return ResponseEntity.ok(result);
     }
     @CrossOrigin(origins = "http://localhost:4200")
 @GetMapping("/bySelection/{nomdev}/{codeb}/{month}")
@@ -104,7 +109,7 @@ public class CoursController {
     public String uploadCoursCSV(@RequestParam("file") MultipartFile file) {
         try {
             coursImportService.importCSV(file);
-            return "CSV data inserted successfully!";
+            return "Le fichier a été ajouté avec succès!";
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }

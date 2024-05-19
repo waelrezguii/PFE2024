@@ -26,18 +26,28 @@ public class AnnoncesCController {
 private DeviseRepository deviseRepository;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
-    public ResponseEntity<Annonces_Client> addAnnonce(@RequestBody Annonces_Client annoncesData) {
+    public ResponseEntity<?> addAnnonce(@RequestBody Annonces_Client annoncesData) {
+
+        // Validate the montant value
+        if (annoncesData.getMontant() == null || annoncesData.getMontant() <= 0) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Le montant ne doit pas être nul ou négatif");
+        }
 
         // Retrieve the utilisateur entity based on the provided cin
         String cin = annoncesData.getUtilisateur().getCin();
-        String Codedev=annoncesData.getDevise().getCodedev();
+        String codedev = annoncesData.getDevise().getCodedev();
         utilisateur utilisateur = utilisateurRepository.findByCin(cin)
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur with CIN " + cin + " not found"));
-devise devise = deviseRepository.findById(Codedev)
-        .orElseThrow(() -> new IllegalArgumentException("Devise"+Codedev+"not found"));
-        // Set the utilisateur object in the Annonces_Client entity
+
+        devise devise = deviseRepository.findById(codedev)
+                .orElseThrow(() -> new IllegalArgumentException("Devise " + codedev + " not found"));
+
+        // Set the utilisateur and devise objects in the Annonces_Client entity
         annoncesData.setUtilisateur(utilisateur);
-annoncesData.setDevise(devise);
+        annoncesData.setDevise(devise);
+
         // Save the Annonces_Client entity
         Annonces_Client savedAnnonce = annoncesCRepository.save(annoncesData);
 

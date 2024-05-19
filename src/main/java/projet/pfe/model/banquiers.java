@@ -14,7 +14,7 @@ public class banquiers {
     private String email;
     @Column(name="mot_de_passe")
     private String mdp;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "CodeB",referencedColumnName = "CodeB")
 
     private banque Banque;

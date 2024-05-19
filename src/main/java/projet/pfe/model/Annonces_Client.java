@@ -28,7 +28,7 @@ public class Annonces_Client {
     @ManyToOne
     @JoinColumn(name="codedev")
     private devise devise;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
 
     @JoinColumn(name = "cin")
 

@@ -14,10 +14,10 @@ public class Annonces_Banquiers {
     private Long idAB;
     @Column(name="taux")
     private Double taux;
-@ManyToOne
+@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="banquier")
     private banquiers banquiers;
-@ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ida")
     private Annonces_Client annoncesClient;
 @Column(name = "statut")

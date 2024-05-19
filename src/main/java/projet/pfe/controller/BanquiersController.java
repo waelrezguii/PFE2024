@@ -15,10 +15,7 @@ import projet.pfe.model.utilisateur;
 import projet.pfe.repository.BanqueRepository;
 import projet.pfe.repository.BanquiersRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/banquiers")
@@ -77,6 +74,24 @@ public class BanquiersController {
             Map<String, String> response = new HashMap<>();
             response.put("message", "User not found");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+    @CrossOrigin(origins = "http://localhost:4200")
+@GetMapping("/affBanquiers")
+    public List<banquiers> getAllBanquier(){
+        return banquiersRepository.findAll();
+    }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<?> deleteBanquier(@PathVariable String email) {
+        try {
+            if (!banquiersRepository.existsById(email)) {
+                return ResponseEntity.notFound().build();
+            }
+            banquiersRepository.deleteById(email);
+            return ResponseEntity.ok().body("Banquier deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting banquier: " + e.getMessage());
         }
     }
 }

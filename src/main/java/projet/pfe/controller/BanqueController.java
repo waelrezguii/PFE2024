@@ -49,7 +49,7 @@ private BanqueRepository banqueRepository;
             }
 
             banque savedBanque = banqueRepository.save(newBanque);
-            return ResponseEntity.ok("Banque added successfully!");
+            return ResponseEntity.ok("La banque a été ajoutée avec succès!");
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception details
             return ResponseEntity
@@ -74,7 +74,7 @@ private BanqueRepository banqueRepository;
             // Delete the banque with the given CodeB
             banqueRepository.deleteById(CodeB);
 
-            return ResponseEntity.ok("Banque deleted successfully!");
+            return ResponseEntity.ok("La banque a été supprimée avec succès!");
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception details
             return ResponseEntity

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import projet.pfe.model.PasswordResetToken;
 import projet.pfe.model.VerificationToken;
+import projet.pfe.model.banque;
 import projet.pfe.model.utilisateur;
 import projet.pfe.repository.PasswordResetTokenRepository;
 import projet.pfe.repository.UtilisateurRepository;
@@ -194,5 +195,38 @@ response.put("Message",msg);
         passwordResetTokenRepository.delete(resetToken.get());
         return ResponseEntity.ok(Map.of("message", "Password reset successfully"));
     }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/affClients")
+    public List<utilisateur> getllClients(){
 
+        return utilisateurRepository.findAll();
+    }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/update/{cin}")
+    public ResponseEntity<?> updateUser(@PathVariable String cin, @RequestBody utilisateur updatedUser) {
+        Optional<utilisateur> userOptional = utilisateurRepository.findByCin(cin);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        utilisateur user = userOptional.get();
+        user.setNom(updatedUser.getNom());
+        user.setPrenom(updatedUser.getPrenom());
+        user.setEmail(updatedUser.getEmail());
+        user.setMdp(updatedUser.getMdp());
+        user.setVerified(updatedUser.isVerified());
+
+        utilisateur updated = utilisateurRepository.save(user);
+        return ResponseEntity.ok(updated);
+    }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/delete/{cin}")
+    public ResponseEntity<?> deleteUser(@PathVariable String cin) {
+        Optional<utilisateur> userOptional = utilisateurRepository.findByCin(cin);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        utilisateurRepository.deleteById(cin);
+        return ResponseEntity.ok().body(Map.of("message", "User deleted successfully"));
+    }
 }
