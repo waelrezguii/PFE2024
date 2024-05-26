@@ -68,7 +68,7 @@ login(email: string, password: string): void {
     logout(): void {
       localStorage.removeItem('isLoggedIn');
       this.isLoggedIn = false;
-      this.router.navigateByUrl('').then(() => {
+      this.router.navigateByUrl('/administration').then(() => {
         // Reload the current route
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
@@ -84,7 +84,7 @@ login(email: string, password: string): void {
       localStorage.removeItem('user')
       localStorage.removeItem('cin')
 
-      this.router.navigateByUrl('').then(() => {
+      this.router.navigateByUrl('/portailC').then(() => {
         // Reload the current route
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
@@ -98,7 +98,7 @@ login(email: string, password: string): void {
 
       localStorage.removeItem('email');
       localStorage.removeItem('codeB');
-      this.router.navigateByUrl('').then(() => {
+      this.router.navigateByUrl('/portailB').then(() => {
         // Reload the current route
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';

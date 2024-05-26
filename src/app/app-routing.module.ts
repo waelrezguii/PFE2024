@@ -25,16 +25,19 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { BanquiersComponent } from './banquiers/banquiers.component';
 import { ListeclientsComponent } from './listeclients/listeclients.component';
+import { clientAuthGuard } from './client-auth.guard';
+import { banquierAuthGuard } from './banquier-auth.guard';
+import { authAdminGuard } from './auth-admin.guard';
 const routes: Routes = [
   {path:'',component:AccueilComponent},
   { path: 'banques', component: BanquesComponent },
 {path:'cours',component:CoursComponent},
 {path:'administration',component:AdministrationComponent},
 {path:'forum',component:ForumComponent},
-{path:'portailC',component:PortailClientComponent},
+{ path: 'portailC', component: PortailClientComponent},
 {path:'portailB',component:PortailBanquiersComponent},
 {path:'registerC',component:RegisterComponent},
-{path:'portailCL',component:PortailCLoggedComponent},
+{ path: 'portailCL', component: PortailCLoggedComponent, canActivate: [clientAuthGuard] },
 {path:'gestionCompte',component:GestionCompteComponent},
 {path:'gestionAnnonces',component:GestionAnnoncesComponent},
 {path:'convert',component:ConvertisseurComponent},
@@ -42,13 +45,13 @@ const routes: Routes = [
 { path:'verify-email/:token', component: VerifyEmailComponent },
 {path:'corps',component:CorpsGestionannoncesComponent},
 {path:'historiques',component:HistoriquesComponent},
-{path:'portailBlogged',component:PortailBloggedComponent},
+{path:'portailBlogged',component:PortailBloggedComponent, canActivate: [banquierAuthGuard] },
 {path:'ForumE',component:ForumEveryoneComponent},
 {path:'post/:id',component:PostDetailsComponent},
 {path:'forget',component:ForgotPasswordComponent},
 {path:'resetpassword/:token',component:ResetPasswordComponent},
-{path:'banquiers',component:BanquiersComponent},
-{path:'clients',component:ListeclientsComponent}
+{path:'banquiers',component:BanquiersComponent,canActivate: [authAdminGuard]},
+{path:'clients',component:ListeclientsComponent,canActivate: [authAdminGuard]}
 
 ];
 
