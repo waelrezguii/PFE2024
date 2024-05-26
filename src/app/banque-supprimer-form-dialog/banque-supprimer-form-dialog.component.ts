@@ -16,15 +16,11 @@ export class BanqueSupprimerFormDialogComponent implements OnInit {
     private http: HttpClient,
     public dialogRef: MatDialogRef<BanqueSupprimerFormDialogComponent>
   ) {
-    // Initialize the form group and control
     this.banqueForm = new FormGroup({
       codeB: new FormControl('', Validators.required)
     });
 
-    // Initialize the banques array
     this.banques = [];
-
-    // Call the getBanques method to fetch the banques data
     this.getBanques();
   }
 
@@ -43,12 +39,12 @@ export class BanqueSupprimerFormDialogComponent implements OnInit {
 
     if (this.banqueForm.valid && codeBControl) {
       const codeBValue = codeBControl.value;
-      if (codeBValue) { // Ensure that the value is not null
+      if (codeBValue) {
         this.http.delete(`http://localhost:8080/api/v1/banque/supprimerBanque/${codeBValue}`)
           .subscribe({
             next: (response) => {
               console.log('Banque deleted successfully:', response);
-              this.dialogRef.close(true);  // Optionally pass back a success indicator
+              this.dialogRef.close(true); 
             },
             error: (error) => {
               console.error('Error deleting banque:', error);

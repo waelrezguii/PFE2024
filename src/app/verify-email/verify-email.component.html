@@ -1,9 +1,9 @@
 <div *ngIf="!verified">
-    <p>Verifying your email...</p>
+    <p>Vérification de votre e-mail...</p>
     <p *ngIf="errorMessage">{{ errorMessage }}</p>
   </div>
   
   <div *ngIf="verified">
-    <p>Your email has been verified successfully!</p>
-    <p>You can now <a routerLink="/login">log in</a> to your account.</p>
-  </div>
+    <p>Votre email a été vérifié avec succès !</p>
+    <p>Vous pouvez maintenant <a routerLink="/login">vous connecter</a> à votre compte.</p>
+    </div>

@@ -6,7 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-banqueajout-form-dialog',
   templateUrl: './banqueajout-form-dialog.component.html',
-  styleUrls: ['./banqueajout-form-dialog.component.css']  // Corrected the property name
+  styleUrls: ['./banqueajout-form-dialog.component.css'] 
 })
 export class BanqueajoutFormDialogComponent implements OnInit {
   banqueForm: FormGroup;

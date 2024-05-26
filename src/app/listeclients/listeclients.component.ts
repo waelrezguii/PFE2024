@@ -33,7 +33,6 @@ export class ListeclientsComponent {
     this.http.put<Utilisateur>(`${this.apiUrl}/update/${client.cin}`, client).subscribe({
       next: (response) => {
         alert('Client updated successfully!');
-        // Optionally, refresh the list or handle other UI updates
       },
       error: (error) => {
         console.error('Error updating client:', error);
@@ -45,7 +44,7 @@ export class ListeclientsComponent {
     this.http.delete(`${this.apiUrl}/delete/${cin}`).subscribe({
       next: () => {
         alert('Client deleted successfully!');
-        this.fetchClients();  // Refresh the list
+        this.fetchClients(); 
       },
       error: (error) => {
         console.error('Error deleting client:', error);

@@ -16,7 +16,7 @@ export class authAdminGuard implements CanActivate {
     if (this.authService.isLoggedIn) {
       return true;
     } else {
-      this.router.navigate(['/administration']); // Redirect to the appropriate login page for bank users
+      this.router.navigate(['/administration']); 
       return false;
     }
   }

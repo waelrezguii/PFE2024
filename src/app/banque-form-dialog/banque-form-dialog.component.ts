@@ -48,7 +48,6 @@ export class BanqueFormDialogComponent implements OnInit {
         },
         error: error => {
           console.error('Error adding banque:', error);
-          // Handle error as needed
         }
       });
     console.log(this.banqueData);

@@ -2,21 +2,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center vertically */
-    height: 50vh; /* Make the container take up the full viewport height */
+    justify-content: center;
+    height: 50vh; 
   }
   
 
   
   .buttons {
     display: flex;
-    flex-direction: row; /* Display buttons in a row */
+    flex-direction: row;
     align-items: center;
-    justify-content: center; /* Center buttons horizontally */
-    width: 100%; /* Ensure buttons take up the full width of the container */
+    justify-content: center;
+    width: 100%;
   }
   
   .buttons button {
-    margin-right: 10px; /* Adjust margin between buttons as needed */
+    margin-right: 10px;
   }
   

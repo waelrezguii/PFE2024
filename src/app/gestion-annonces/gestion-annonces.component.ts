@@ -37,24 +37,17 @@ export class GestionAnnoncesComponent implements OnInit {
         .subscribe({
           next: (response: any) => {
             console.log('Announcement added successfully:', response);
-            // Store the entire response object in localStorage
             localStorage.setItem('annoncesData', JSON.stringify(response)); 
-  
-            // Store just the idA from the response in localStorage
-            localStorage.setItem('idA', response.idA); 
-  
-            // Now you can retrieve idA from localStorage wherever needed
-            const storedIdA = localStorage.getItem('idA');
+              localStorage.setItem('idA', response.idA); 
+              const storedIdA = localStorage.getItem('idA');
             console.log('Stored idA:', storedIdA);
           },
           error: error => {
             console.error('Error adding announcement:', error);
-            // Handle the error as needed
           }
         });
     } else {
       console.error('User not logged in or Cin not available.');
-      // Handle the case where the user is not logged in or Cin is not available
     }
   }
   

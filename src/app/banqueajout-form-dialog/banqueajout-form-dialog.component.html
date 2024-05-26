@@ -3,7 +3,6 @@
   <mat-form-field appearance="fill">
     <mat-label>Code B</mat-label>
     <input matInput formControlName="codeB">
-    <!-- Use optional chaining and bracket notation for error handling -->
     <mat-error *ngIf="banqueForm.get('codeB')?.errors?.['required']">
       Code B is required.
     </mat-error>
@@ -12,7 +11,6 @@
   <mat-form-field appearance="fill">
     <mat-label>Nom Banque</mat-label>
     <input matInput formControlName="nombanque">
-    <!-- Use optional chaining and bracket notation for error handling -->
     <mat-error *ngIf="banqueForm.get('nombanque')?.errors?.['required']">
       Nom Banque is required.
     </mat-error>

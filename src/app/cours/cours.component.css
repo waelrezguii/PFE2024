@@ -1,6 +1,5 @@
-/* Adjust the margin-right for the select element */
 select {
-    margin-right:70px; /* Adjust the value as needed */
+    margin-right:70px; 
 }
 .table thead.custom-thead th {
     background-color: black !important;

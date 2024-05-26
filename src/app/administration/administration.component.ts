@@ -14,14 +14,39 @@ export class AdministrationComponent {
   constructor(private authService : AuthentificationService){
 
   }
-  login():void{
+  login(): void {
     if (this.email && this.password) {
-      this.authService.login(this.email, this.password);
+      this.authService.login(this.email, this.password).subscribe(
+        () => {
+   
+          console.log('Connexion réussie');
+        },
+        error => {
+          console.error('Échec de la connexion:', error);
+          let errorMessage = 'Erreur inconnue survenue'; 
+          if (error.status === 401) {
+            errorMessage = error.error.message; 
+          } else if (error.status === 404) {
+            errorMessage = 'Email introuvable.';
+          }
+          console.log(errorMessage);
+          alert(errorMessage); 
+        }
+      );
     } else {
-      console.error('Email or password is null');
+      if (!this.email && !this.password) {
+        console.error('Email et mot de passe sont nuls');
+        alert('L’email et le mot de passe sont requis');
+      } else if (!this.email) {
+        console.error('Email est nul');
+        alert('L’email est requis');
+      } else if (!this.password) {
+        console.error('Mot de passe est nul');
+        alert('Le mot de passe est requis');
+      }
     }
-
   }
+  
   logout():void{
  this.authService.logout();
   }

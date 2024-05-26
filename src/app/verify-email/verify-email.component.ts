@@ -15,9 +15,8 @@ export class VerifyEmailComponent implements OnDestroy {
   private emailVerificationSubscription: Subscription | undefined;
 
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthentificationService, private router: Router) {
-    // Subscribe to route parameters in ngOnInit lifecycle hook
     this.activatedRoute.paramMap.subscribe(params => {
-      this.token = params.get('token') || ''; // Use empty string if token is null
+      this.token = params.get('token') || ''; 
       if (this.token) {
         this.verifyEmail();
       } else {
@@ -36,7 +35,7 @@ export class VerifyEmailComponent implements OnDestroy {
       next: (response: any) => {
         console.log('Email verified successfully', response);
         this.verified = true;
-        // Redirect the user to the login page after successful email verification
+    
         this.router.navigate(['/portailC']);
       },
       error: (error: any) => {

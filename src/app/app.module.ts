@@ -12,8 +12,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { NgChartsModule } from 'ng2-charts';
 import { DatePipe } from '@angular/common';
-
-// Import your application components
 import { AppComponent } from './app.component';
 import { BanquesComponent } from './banques/banques.component';
 import { AccueilComponent } from './accueil/accueil.component';

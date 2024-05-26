@@ -11,12 +11,12 @@ export class ResetPasswordComponent implements OnInit {
   token: string = '';
   newPassword: string = '';
   message: string = '';
-  isError: boolean = false; // This will control the class of the alert
+  isError: boolean = false; 
 
   constructor(
     private authService: AuthentificationService,
     private route: ActivatedRoute,
-    private router: Router // Inject the Router service
+    private router: Router 
   ) {}
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -28,8 +28,7 @@ export class ResetPasswordComponent implements OnInit {
       next: () => {
         this.message = 'Password has been reset successfully.';
         this.isError = false;
-        // Navigate to portailC after successful password reset
-        this.router.navigate(['/portailC']); // Adjust the route as needed
+        this.router.navigate(['/portailC']); 
       },
       error: (error) => {
         this.message = 'Failed to reset password. ' + error.error.message;

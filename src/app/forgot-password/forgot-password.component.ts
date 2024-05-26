@@ -15,7 +15,7 @@ export class ForgotPasswordComponent {
   submitEmail() {
     this.authService.forgotPassword(this.email).subscribe({
       next: () => {
-        this.message = 'Reset link sent to your email.';
+        this.message = 'Le lien de récupération a été envoyé.';
         this.isError = false;
       },
       error: (error) => {

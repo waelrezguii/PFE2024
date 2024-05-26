@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthentificationService } from '../authentification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portail-banquiers',
@@ -9,21 +10,35 @@ import { AuthentificationService } from '../authentification.service';
 export class PortailBanquiersComponent {
   email:string|null=null;
   password:string|null=null;
-  constructor(private authService:AuthentificationService){
+  constructor(private authService:AuthentificationService,  private router: Router){
 
   }
+  
   login(): void {
-    if (this.email && this.password) {
-      this.authService.loginB(this.email, this.password).subscribe(response => {
-        if (response) {
-          console.log('Logged in successfully');
-        } else {
-          console.error('Login failed');
-        }
-      });
-    } else {
-      console.error('Email or password is null');
+    if (!this.email) {
+      alert('Veuillez saisir une adresse e-mail.');
+      return;
     }
+    if (!this.password) {
+      alert('Veuillez saisir un mot de passe.');
+      return;
+    }
+
+    this.authService.loginB(this.email, this.password).subscribe({
+      next: (response) => {
+        this.router.navigate(['/portailBlogged']); 
+      },
+      error: (error) => {
+     
+        if (error.error.error === 'Email not found') {
+          alert('L\'adresse e-mail n\'existe pas.');
+        } else if (error.error.error === 'Incorrect password') {
+          alert('Le mot de passe est incorrect.'); 
+        } else {
+          alert('Une erreur inconnue est survenue.'); 
+        }
+      }
+    });
   }
   logout():void{
     this.authService.logoutB();

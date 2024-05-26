@@ -13,7 +13,7 @@ import { BanqueSupprimerFormDialogComponent } from '../banque-supprimer-form-dia
   styleUrls: ['./banques.component.css']
 })
 export class BanquesComponent implements OnInit {
-  banques: banque[] = []; // Initialize the property here
+  banques: banque[] = []; 
   isLoggedIn: boolean = false;
 
   constructor(private httpclient: HttpClient,private authService:AuthentificationService,public dialog:MatDialog) { }
@@ -37,24 +37,22 @@ export class BanquesComponent implements OnInit {
   Ajouter(): void {
     const dialogRef = this.dialog.open(BanqueFormDialogComponent, {
       width: '400px',
-      data: {} // You can pass initial data if needed
+      data: {} 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // Refresh the list of banks or perform any other actions after dialog is closed
       this.getBanques();
     });
   }
   add(): void {
     const dialogRef = this.dialog.open(BanqueajoutFormDialogComponent, {
       width: '400px',
-      data: {} // You can pass initial data if needed
+      data: {} 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // Refresh the list of banks or perform any other actions after dialog is closed
       this.getBanques();
     });
   }
@@ -63,7 +61,7 @@ export class BanquesComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log('Banque deleted successfully:', response);
-          this.getBanques(); // Refresh the list of banques
+          this.getBanques(); 
         },
         error: (error) => {
           console.error('Error occurred while deleting the banque:', error);

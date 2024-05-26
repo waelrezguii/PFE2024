@@ -17,30 +17,22 @@
       this.isLoggedInB=!!localStorage.getItem('isLoggedInB');
     }
 
-   
-login(email: string, password: string): void {
-  const loginInfo = { email, mdp: password };
-
-  this.http.post<any>('http://localhost:8080/api/v1/admins/login', loginInfo)
-    .subscribe({
-      next: response => {
-        console.log('Login successful:', response);
-        localStorage.setItem('isLoggedIn', 'true');
-        this.isLoggedIn = true;
-        // Redirect to the home page
-        this.router.navigateByUrl('').then(() => {
-          // Reload the current route
-          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-          this.router.onSameUrlNavigation = 'reload';
-          this.router.navigate([this.router.url]);
-        });
-      },
-      error: error => {
-        console.error('Login failed:', error);
-      }
-    });
-}
-
+    login(email: string, password: string) {
+      const loginInfo = { email, mdp: password };
+  
+      return this.http.post<any>('http://localhost:8080/api/v1/admins/login', loginInfo).pipe(
+        tap(response => {
+          console.log('Login successful:', response);
+          localStorage.setItem('isLoggedIn', 'true');
+          this.isLoggedIn = true;
+          this.router.navigateByUrl('').then(() => {
+            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+            this.router.onSameUrlNavigation = 'reload';
+            this.router.navigate([this.router.url]);
+          });
+        })
+      );
+    }
     loginC(email: string, password: string): Observable<any> {
       const loginInfo = { email, mdp: password };
     
@@ -51,8 +43,7 @@ login(email: string, password: string): void {
               this.isLoggedInC = true;
               localStorage.setItem('isLoggedInC', 'true');
               localStorage.setItem('user',response.user);
-              
-              localStorage.setItem('nom', response.user.nom);
+             localStorage.setItem('nom', response.user.nom);
               localStorage.setItem('prenom', response.user.prenom);
               localStorage.setItem('cin', response.user.cin);
               this.router.navigate(['/portailCL']);
@@ -68,8 +59,7 @@ login(email: string, password: string): void {
     logout(): void {
       localStorage.removeItem('isLoggedIn');
       this.isLoggedIn = false;
-      this.router.navigateByUrl('/administration').then(() => {
-        // Reload the current route
+      this.router.navigateByUrl('').then(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate([this.router.url]);
@@ -84,8 +74,7 @@ login(email: string, password: string): void {
       localStorage.removeItem('user')
       localStorage.removeItem('cin')
 
-      this.router.navigateByUrl('/portailC').then(() => {
-        // Reload the current route
+      this.router.navigateByUrl('').then(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate([this.router.url]);
@@ -95,11 +84,9 @@ login(email: string, password: string): void {
       localStorage.removeItem('isLoggedInB');
       this.isLoggedInB = false;
       localStorage.removeItem('user2');
-
       localStorage.removeItem('email');
       localStorage.removeItem('codeB');
-      this.router.navigateByUrl('/portailB').then(() => {
-        // Reload the current route
+      this.router.navigateByUrl('').then(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate([this.router.url]);
@@ -112,11 +99,8 @@ login(email: string, password: string): void {
           catchError((error: HttpErrorResponse) => {
             let errorMessage = '';
             if (error.error instanceof ErrorEvent) {
-              // A client-side or network error occurred. Handle it accordingly.
               errorMessage = `An error occurred: ${error.error.message}`;
             } else {
-              // The backend returned an unsuccessful response code.
-              // The response body may contain clues as to what went wrong,
               errorMessage = `Backend returned code ${error.status}: ${error.message}`;
             }
             return throwError(() => new Error(errorMessage));
@@ -125,11 +109,8 @@ login(email: string, password: string): void {
     }
     
     verifyEmailToken(token: string): Observable<any> {
-      // Construct the URL with the token properly appended
       const url = `http://localhost:8080/api/v1/utilisateurs/verify-email?token=${token}`;
-    
-      // Make the HTTP GET request to the URL
-      return this.http.get<any>(url).pipe(
+          return this.http.get<any>(url).pipe(
         map(response => {
           console.log('Response from server:', response);
           return response;
@@ -137,11 +118,9 @@ login(email: string, password: string): void {
         catchError((error: HttpErrorResponse) => {
           console.error('Error occurred in verifyEmailToken method:', error);
           if (error.status === 400 && error.error === 'Invalid token.') {
-            // Invalid token, show error message
             return throwError(() => new Error('The verification token is invalid or has expired. Please try registering again.'));
           } else {
             console.error('An unexpected error occurred:', error.error.message || 'An unexpected error occurred');
-            // Return a user-friendly error message
             return throwError(() => new Error('An error occurred while verifying your email. Please try again later.'));
           }
         })
@@ -154,7 +133,6 @@ login(email: string, password: string): void {
      
     }
     addAnnouncement(announcementData: any) {
-      // Make an HTTP POST request to add the announcement
       return this.http.post('http://localhost:8080/api/v1/annoncesC/add', announcementData)
     }
     getBanques(): Observable<any[]> {
@@ -190,10 +168,8 @@ login(email: string, password: string): void {
         );
     }
     forgotPassword(email: string): Observable<any> {
-      // Construct the URL with the email query parameter
       const url = `${this.baseUrl}/forgot-password?email=${encodeURIComponent(email)}`;
   
-      // Make the HTTP POST request
       return this.http.post(url, {}).pipe(
           catchError((error: HttpErrorResponse) => {
               const errorMessage = `Error: ${error.status} - ${error.error.error}: ${error.message}`;
@@ -205,7 +181,6 @@ login(email: string, password: string): void {
   
   
   resetPassword(token: string, password: string): Observable<any> {
-    // Construct the URL with the token and password as query parameters
     const url = `${this.baseUrl}/reset-password?token=${encodeURIComponent(token)}&password=${encodeURIComponent(password)}`;
     return this.http.post(url, {}).pipe(
         catchError((error: HttpErrorResponse) => {

@@ -48,7 +48,6 @@ export class CoursComponent implements OnInit {
   validateInputs(): boolean {
     const today = this.formatDate(new Date());
 
-    // Validate empty fields and negative values
     if (!this.nomd || !this.selectedDate) {
       alert('Veuillez remplir tous les champs correctement.');
       return false;
@@ -59,7 +58,6 @@ export class CoursComponent implements OnInit {
       return false;
     }
 
-    // Validate date is not in the future
     if (this.selectedDate > today) {
       alert('La date sélectionnée ne doit pas dépasser la date du jour.');
       return false;
@@ -78,7 +76,7 @@ export class CoursComponent implements OnInit {
       this.tableData = data;
       this.isDataLoaded = true;
       if (data.length > 0) {
-        this.codedev = data[0].codeDev; // Access codedev from the first element
+        this.codedev = data[0].codeDev;
         this.getCodeDev();
       }
     });
@@ -87,9 +85,9 @@ export class CoursComponent implements OnInit {
   getCodeDev(): void {
     const url = `http://localhost:8080/api/v1/devise/byCodedev/${this.codedev}`;
     this.http.get<devise>(url).subscribe(data => {
-      console.log(data); // Log the response to check its structure
+      console.log(data); 
       this.CodeDevList = data;
-      this.drapeau = this.CodeDevList.drapeau; // Access drapeau directly
+      this.drapeau = this.CodeDevList.drapeau;
       console.log(this.CodeDevList);
       console.log(this.drapeau);
     });
@@ -103,7 +101,6 @@ export class CoursComponent implements OnInit {
     return parseFloat((item.vente * this.money).toFixed(2));
     }
 
-  // New method for file upload
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {

@@ -8,9 +8,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./post-form-dialog.component.css']
 })
 export class PostFormDialogComponent implements OnInit {
-  idA!: number; // Non-null assertion operator
-  email!: string; // Non-null assertion operator
-  taux!: number; // Declare taux as a number
+  idA!: number;
+  email!: string;
+  taux!: number;
   errorMessage: string = '';
 
   annoncesData: any = {
@@ -29,7 +29,7 @@ export class PostFormDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.email = localStorage.getItem('email')!; // Using non-null assertion operator
+    this.email = localStorage.getItem('email')!; 
     this.idA = this.data.idA;
   }
 
@@ -40,12 +40,11 @@ export class PostFormDialogComponent implements OnInit {
       return false;
     }
 
-    this.errorMessage = ''; // Clear previous errors
+    this.errorMessage = ''; 
     return true;
   }
 
   onSubmit(): void {
-    // Validate the form data before submission
     if (!this.validateForm()) {
       alert(this.errorMessage);
       return;
@@ -65,12 +64,12 @@ export class PostFormDialogComponent implements OnInit {
         next: (response) => {
           console.log('Success:', response);
           this.dialogRef.close();
-          window.location.reload(); // Reload the page
+          window.location.reload();
         },
         error: (error) => {
           console.error('Error adding:', error);
           if (error.status === 400) {
-            alert(error.error); // Show backend error message directly
+            alert(error.error);
           } else {
             alert('Erreur inconnue. Veuillez réessayer.');
           }

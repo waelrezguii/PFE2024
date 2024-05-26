@@ -32,12 +32,11 @@ this.devises=devises;
 Ajouter(): void {
   const dialogRef = this.dialog.open(AjoutdevComponent, {
     width: '400px',
-    data: {} // You can pass initial data if needed
+    data: {} 
   });
 
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed');
-    // Refresh the list of banks or perform any other actions after dialog is closed
     this.LoadDevises();
   });
 }

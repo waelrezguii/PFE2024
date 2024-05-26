@@ -13,7 +13,7 @@ export class ExchangeChartComponent implements OnInit, AfterViewInit {
   banques: string[] = [];
   selectedD: string = '';
   selectedB: string = '';
-  selectedMonth: number = new Date().getMonth() + 1; // Default to current month
+  selectedMonth: number = new Date().getMonth() + 1;
   tableData: any[] = [];
   isDataLoaded: boolean = true;
   lineChartOptions: ChartOptions = {
@@ -73,16 +73,16 @@ export class ExchangeChartComponent implements OnInit, AfterViewInit {
     const myChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: data.map(item => item.date_cours), // Adjust according to your data
+        labels: data.map(item => item.date_cours), 
         datasets: [{
           label: 'Achat',
-          data: data.map(item => item.achat), // Adjust according to your data
+          data: data.map(item => item.achat), 
           backgroundColor: 'rgba(255, 99, 132, 0.2)',
           borderColor: 'rgba(255, 99, 132, 1)',
           borderWidth: 1
         }, {
           label: 'Vente',
-          data: data.map(item => item.vente), // Adjust according to your data
+          data: data.map(item => item.vente), 
           backgroundColor: 'rgba(54, 162, 235, 0.2)',
           borderColor: 'rgba(54, 162, 235, 1)',
           borderWidth: 1

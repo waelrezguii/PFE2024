@@ -16,7 +16,7 @@ export class banquierAuthGuard implements CanActivate {
     if (this.authService.isLoggedInB) {
       return true;
     } else {
-      this.router.navigate(['/portailB']); // Redirect to the appropriate login page for bank users
+      this.router.navigate(['/portailB']);
       return false;
     }
   }

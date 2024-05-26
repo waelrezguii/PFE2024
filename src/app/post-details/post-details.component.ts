@@ -29,7 +29,7 @@ export class PostDetailsComponent implements OnInit {
     this.isLoggedInB = this.authService.isLoggedInB;
     this.isLoggedInC=this.authService.isLoggedInC;
     this.route.params.subscribe(params => {
-      this.idA = +params['id']; // '+' is used to convert string to number
+      this.idA = +params['id']; 
       if (this.idA) {
         this.getAnnonces();
       } else {
@@ -41,12 +41,11 @@ export class PostDetailsComponent implements OnInit {
   Ajouter(): void {
     const dialogRef = this.dialog.open(PostFormDialogComponent, {
       width: '400px',
-      data: {idA:this.idA} // You can pass initial data if needed
+      data: {idA:this.idA}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // Refresh the list of banks or perform any other actions after dialog is closed
     });
   }
 
@@ -65,7 +64,6 @@ export class PostDetailsComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error accepting announcement:', error);
-          // Handle error as needed
         },
       });
   }
