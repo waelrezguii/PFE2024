@@ -12,9 +12,9 @@
     isLoggedInC = false;
     isLoggedInB=false;
     constructor(private http: HttpClient, private router: Router) {
-      this.isLoggedIn = !!localStorage.getItem('isLoggedIn');
-      this.isLoggedInC = !!localStorage.getItem('isLoggedInC');
-      this.isLoggedInB=!!localStorage.getItem('isLoggedInB');
+      this.isLoggedIn = !!sessionStorage.getItem('isLoggedIn');
+      this.isLoggedInC = !!sessionStorage.getItem('isLoggedInC');
+      this.isLoggedInB = !!sessionStorage.getItem('isLoggedInB');
     }
 
     login(email: string, password: string) {
@@ -23,7 +23,7 @@
       return this.http.post<any>('http://localhost:8080/api/v1/admins/login', loginInfo).pipe(
         tap(response => {
           console.log('Login successful:', response);
-          localStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('isLoggedIn', 'true');
           this.isLoggedIn = true;
           this.router.navigateByUrl('').then(() => {
             this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -41,11 +41,11 @@
           map(response => {
             if (response.user) {
               this.isLoggedInC = true;
-              localStorage.setItem('isLoggedInC', 'true');
-              localStorage.setItem('user',response.user);
-             localStorage.setItem('nom', response.user.nom);
-              localStorage.setItem('prenom', response.user.prenom);
-              localStorage.setItem('cin', response.user.cin);
+              sessionStorage.setItem('isLoggedInC', 'true');
+              sessionStorage.setItem('user', JSON.stringify(response.user));
+              sessionStorage.setItem('nom', response.user.nom);
+              sessionStorage.setItem('prenom', response.user.prenom);
+              sessionStorage.setItem('cin', response.user.cin);
               this.router.navigate(['/portailCL']);
               return response;
             } else {
@@ -57,7 +57,7 @@
     }
     
     logout(): void {
-      localStorage.removeItem('isLoggedIn');
+      sessionStorage.removeItem('isLoggedIn');
       this.isLoggedIn = false;
       this.router.navigateByUrl('').then(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -67,12 +67,12 @@
     }
 
     logoutC(): void {
-      localStorage.removeItem('isLoggedInC');
+      sessionStorage.removeItem('isLoggedInC');
+      sessionStorage.removeItem('nom');
+      sessionStorage.removeItem('prenom');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('cin');
       this.isLoggedInC = false;
-      localStorage.removeItem('nom');
-      localStorage.removeItem('prenom');
-      localStorage.removeItem('user')
-      localStorage.removeItem('cin')
 
       this.router.navigateByUrl('').then(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -81,11 +81,11 @@
       });
     } 
     logoutB(): void {
-      localStorage.removeItem('isLoggedInB');
+      sessionStorage.removeItem('isLoggedInB');
+      sessionStorage.removeItem('user2');
+      sessionStorage.removeItem('email');
+      sessionStorage.removeItem('codeB');
       this.isLoggedInB = false;
-      localStorage.removeItem('user2');
-      localStorage.removeItem('email');
-      localStorage.removeItem('codeB');
       this.router.navigateByUrl('').then(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
@@ -151,11 +151,11 @@
           map(response => {
             if (response.user) {
               this.isLoggedInB = true;
-              localStorage.setItem('isLoggedInB', 'true');
-              localStorage.setItem('user2', JSON.stringify(response.user));
+              sessionStorage.setItem('isLoggedInB', 'true');
+              sessionStorage.setItem('user2', JSON.stringify(response.user));
               
-              localStorage.setItem('email', response.user.email);
-              localStorage.setItem('codeB', response.user.codeB);
+              sessionStorage.setItem('email', response.user.email);
+              sessionStorage.setItem('codeB', response.user.codeB);
               console.log(response);
               
               this.router.navigate(['/portailBlogged']);

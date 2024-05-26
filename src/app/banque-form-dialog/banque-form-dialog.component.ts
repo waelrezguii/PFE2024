@@ -14,7 +14,7 @@ export class BanqueFormDialogComponent implements OnInit {
   banqueData: {
     email: '';
     mdp: '';
-    banque:banque; // Indicate that the property can be null
+    banque:banque;
   };
 
   constructor(
