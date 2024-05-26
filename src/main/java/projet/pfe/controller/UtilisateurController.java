@@ -42,53 +42,39 @@ private PasswordResetTokenRepository passwordResetTokenRepository;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody utilisateur user, HttpServletRequest request) {
-        // Check if the email already exists
-        String msg="votre compte a été créé avec succès";
-        Optional<utilisateur> existingUserOptional = utilisateurRepository.findByEmail(user.getEmail());
-        if (existingUserOptional.isPresent()) {
-            utilisateur existingUser = existingUserOptional.get();
-            // Check if the email already exists
-            if (existingUser.getEmail().equals(user.getEmail())) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Email already exists"));
-            }
+        if (utilisateurRepository.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("erreur", "L'e-mail existe déjà"));
         }
 
-
-        // Check if the Cin already exists
         if (utilisateurRepository.findById(user.getCin()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Cin already exists"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("erreur", "Cin existe déjà"));
         }
-        String cinRegex = "\\d{8}"; // Regex for 8-digit numbers
+
+        String cinRegex = "\\d{8}";
         if (!Pattern.matches(cinRegex, user.getCin())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Cin must be 8 digits"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erreur", "Cin doit comporter 8 chiffres"));
         }
 
-        // Save the user first
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        if (!Pattern.matches(emailRegex, user.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erreur", "Format d'e-mail invalide"));
+        }
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*])(?=\\S+$).{8,}$";
+        if (!Pattern.matches(passwordRegex, user.getMdp())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erreur", "Le mot de passe doit comporter au moins 8 caractères et inclure au moins une lettre majuscule, un caractère spécial et un chiffre"));
+        }
+
         utilisateur savedUser = utilisateurRepository.save(user);
-
         if (savedUser == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to save user"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Erreur", "Échec de l'enregistrement de l'utilisateur"));
         }
 
-        // Generate a unique verification token
         String token = UUID.randomUUID().toString();
-
-        // Create a new VerificationToken object
-        VerificationToken verificationToken = new VerificationToken();
-        verificationToken.setToken(token);
-        verificationToken.setUtilisateur(savedUser);
-
-        // Insert the VerificationToken into the database
+        VerificationToken verificationToken = new VerificationToken(token, savedUser);
         verifTokenRepository.save(verificationToken);
-
-        // Send verification email
         mailService.sendVerificationEmail(savedUser, token);
 
-        // Return the token in the response object
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-response.put("Message",msg);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("token", token, "message", "Votre compte a été créé avec succès"));
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/CIN/{cin}")
@@ -105,30 +91,23 @@ response.put("Message",msg);
     public ResponseEntity<Map<String, String>> verifyEmailToken(@RequestParam("token") String token) {
         Optional<VerificationToken> verificationToken = verifTokenRepository.findByToken(token);
         if (verificationToken.isEmpty()) {
-            // Token not found, return an error message
-            return ResponseEntity.badRequest().body(Map.of("error", "Invalid token."));
+            return ResponseEntity.badRequest().body(Map.of("erreur", "Jeton invalide."));
         }
 
-        // Find the User entity associated with the VerificationToken
         utilisateur user = verificationToken.get().getUtilisateur();
 
         if (user == null || user.isVerified()) {
-            // User not found or already verified, return an error message
-            return ResponseEntity.badRequest().body(Map.of("error", "User not found or already verified."));
+            return ResponseEntity.badRequest().body(Map.of("erreur", "Utilisateur introuvable ou déjà vérifié."));
         }
 
-        // Set the user's email verified status to true
         user.setVerified(true);
 
-        // Save the updated User entity
         utilisateurRepository.save(user);
 
-        // Delete the VerificationToken entity
         verifTokenRepository.delete(verificationToken.get());
 
-        // Return a success message
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Email verified successfully.");
+        response.put("message", "E-mail vérifié avec succès.");
         return ResponseEntity.ok(response);
     }
     @CrossOrigin(origins = "http://localhost:4200")
@@ -138,48 +117,44 @@ response.put("Message",msg);
         String mdp = loginInfos.getMdp();
         Optional<utilisateur> userOptional = utilisateurRepository.findByEmail(email);
 
-        if (userOptional.isPresent()) {
-            utilisateur user = userOptional.get();
-            if (user.getMdp().equals(mdp)) {
-                // Construct a response object for success
-                Map<String, Object> response = new HashMap<>();
-                response.put("message", "connected");
-                response.put("user", user); // Include user data if needed
-
-                // Set the authenticated user in the SecurityContextHolder
-                Authentication auth = new UsernamePasswordAuthenticationToken(email, mdp, new ArrayList<>());
-                SecurityContextHolder.getContext().setAuthentication(auth);
-
-                return ResponseEntity.ok().body(response);
-            } else {
-                // Password does not match
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "invalid");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-            }
-        } else {
-            // User not found
+        if (!userOptional.isPresent()) {
             Map<String, String> response = new HashMap<>();
-            response.put("message", "User not found");
+            response.put("message", "L'email n'existe pas dans notre système.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
+        utilisateur user = userOptional.get();
+        if (!user.getMdp().equals(mdp)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Le mot de passe est incorrect.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Connexion réussie.");
+        response.put("user", user);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(email, mdp, new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        return ResponseEntity.ok().body(response);
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
         Optional<utilisateur> userOptional = utilisateurRepository.findByEmail(email);
         if (!userOptional.isPresent()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "User not found"));
+            return ResponseEntity.badRequest().body(Map.of("erreur", "Utilisateur introuvable"));
         }
         utilisateur user = userOptional.get();
         String token = UUID.randomUUID().toString();
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setToken(token);
         resetToken.setUtilisateur(user);
-        resetToken.calculateExpiryDate(); // Set the expiry date
+        resetToken.calculateExpiryDate();
         passwordResetTokenRepository.save(resetToken);
         mailService.sendPasswordResetEmail(user, token);
-        return ResponseEntity.ok(Map.of("message", "Reset password email sent"));
+        return ResponseEntity.ok(Map.of("message", "E-mail de réinitialisation du mot de passe envoyé"));
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -187,13 +162,13 @@ response.put("Message",msg);
     public ResponseEntity<?> resetPassword(@RequestParam("token") String token, @RequestParam("password") String newPassword) {
         Optional<PasswordResetToken> resetToken = passwordResetTokenRepository.findByToken(token);
         if (!resetToken.isPresent() || resetToken.get().isExpired()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Invalid or expired token"));
+            return ResponseEntity.badRequest().body(Map.of("erreur", "Jeton invalide ou expiré"));
         }
         utilisateur user = resetToken.get().getUtilisateur();
         user.setMdp(newPassword);
         utilisateurRepository.save(user);
         passwordResetTokenRepository.delete(resetToken.get());
-        return ResponseEntity.ok(Map.of("message", "Password reset successfully"));
+        return ResponseEntity.ok(Map.of("message", "Mot de passe réinitialisé avec succès"));
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/affClients")
@@ -227,6 +202,6 @@ response.put("Message",msg);
             return ResponseEntity.notFound().build();
         }
         utilisateurRepository.deleteById(cin);
-        return ResponseEntity.ok().body(Map.of("message", "User deleted successfully"));
+        return ResponseEntity.ok().body(Map.of("message", "Utilisateur supprimé avec succès"));
     }
 }

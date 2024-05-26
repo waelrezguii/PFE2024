@@ -40,7 +40,7 @@ public class CoursController {
     @GetMapping("/all")
     public List<cours> getAllCours(){return coursRepository.findAll();}
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/byCodeDev/{codeDev}") // Update the mapping to match the endpoint
+    @GetMapping("/byCodeDev/{codeDev}")
     public List<cours> getCoursByDeviseCodedev(@PathVariable String codeDev) {
         return coursRepository.findByDevise_Codedev(codeDev);
     }
@@ -94,10 +94,7 @@ public class CoursController {
 @GetMapping("/bySelection/{nomdev}/{codeb}/{month}")
     public List<cours>getCoursBySelection(@PathVariable String nomdev,@PathVariable String codeb,@PathVariable int month)
     {
-        // Determine the first day of the month
         LocalDate firstDayOfMonth = LocalDate.now().withMonth(month).withDayOfMonth(1);
-
-        // Determine the last day of the month
         LocalDate lastDayOfMonth = firstDayOfMonth.withDayOfMonth(firstDayOfMonth.lengthOfMonth());
 
         return coursRepository.findByDevise_NomdeviseAndBanque_CodeBAndDate_coursBetween(nomdev, codeb, firstDayOfMonth, lastDayOfMonth);

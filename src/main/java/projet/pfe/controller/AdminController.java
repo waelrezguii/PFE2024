@@ -23,15 +23,21 @@ public class AdminController {
         String email = loginInfos.getEmail();
         String password = loginInfos.getMdp();
         Administrateur admin1 = adminRepository.findByEmail(email);
-        if (admin1 != null && admin1.getMdp().equals(password)) {
+        if (admin1 == null) {
             Map<String, String> response = new HashMap<>();
-            response.put("message", "connecté(e)");
-            return ResponseEntity.ok().body(response);
-        } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "invalid");
+            response.put("message", "L'email n'existe pas.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
+        if (!admin1.getMdp().equals(password)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Le mot de passe est incorrect.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "connecté(e)");
+        return ResponseEntity.ok().body(response);
     }
 
 }

@@ -34,19 +34,16 @@ public class AnnoncesBController {
                     .body("Le taux ne doit pas être nul, négatif ou égal à zéro");
         }
 
-        // Check if the banquier has already added two offers for the same annonces client idA
         int numberOfOffers = annoncesBRepository.countByBanquiers_EmailAndAnnoncesClient_IdA(email, id);
         if (numberOfOffers >= 2) {
-            // If the banquier has already added two offers, return an error response
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Le banquier a déjà ajouté deux offres pour cette annonce client");
         }
 
-        // If the banquier has not added two offers yet, proceed with adding the new offer
         banquiers banquiers = banquiersRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Banquier with email " + email + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Banquier avec email est  " + email + " introuvable"));
         Annonces_Client annoncesClient = annoncesCRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Annonce client with id " + id + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("L'id de l'annonce du client est  " + id + " introuvable"));
         annoncesData.setBanquiers(banquiers);
         annoncesData.setAnnoncesClient(annoncesClient);
         Annonces_Banquiers savedAnnonce = annoncesBRepository.save(annoncesData);

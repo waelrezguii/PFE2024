@@ -37,17 +37,14 @@ boolean NomdeviseExists=deviseRepository.existsByNomdevise(newdev.getNomdevise()
 boolean drapeauExists=deviseRepository.existsByDrapeau(newdev.getDrapeau());
 boolean libelleExists=deviseRepository.existsByLibelle(newdev.getLibelle());
            if (CodedevExists && NomdeviseExists && drapeauExists && libelleExists) {
-               // Both CodeB and Nombanque already exist
                return ResponseEntity
                        .badRequest()
                        .body("Error: La devise existe!");
            } else if (CodedevExists) {
-               // CodeB already exists
                return ResponseEntity
                        .badRequest()
                        .body("Error: Le code du devise existe!");
            } else if (drapeauExists) {
-               // Nombanque already exists
                return ResponseEntity
                        .badRequest()
                        .body("Error: Le drapeau du devise existe!");
@@ -59,7 +56,7 @@ boolean libelleExists=deviseRepository.existsByLibelle(newdev.getLibelle());
        devise savedDevise=deviseRepository.save(newdev);
            return ResponseEntity.ok("La devise a été ajoutée avec succès!");
        }catch (Exception e) {
-           e.printStackTrace(); // Log the exception details
+           e.printStackTrace();
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                    .body("Error: " + e.getMessage());

@@ -34,14 +34,10 @@ public class BanquiersController {
 
         String CodeB = bq.getBanque().getCodeB();
         banque banque = banqueRepository.findById(CodeB)
-                .orElseThrow(() -> new EntityNotFoundException("Banque with CodeB " + CodeB + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("La banque avec le CodeB est " + CodeB + " introuvable"));
 
-        // Set the banque object in the banquiers entity
         bq.setBanque(banque);
-
-        // Save the banquiers entity
         banquiers savedBanquiers = banquiersRepository.save(bq);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBanquiers);
     }
     @CrossOrigin(origins = "http://localhost:4200")
@@ -50,32 +46,30 @@ public class BanquiersController {
         String email = loginInfos.getEmail();
         String mdp = loginInfos.getMdp();
         Optional<banquiers> userOptional = banquiersRepository.findByEmail(email);
-        if (userOptional.isPresent()) {
-            banquiers user = userOptional.get();
-            if (user.getMdp().equals(mdp)) {
-                // Construct a response object for success
-                Map<String, Object> response = new HashMap<>();
-                response.put("message", "connected");
-                response.put("user", user); // Include user data if needed
 
-                // Set the authenticated user in the SecurityContextHolder
-                Authentication auth = new UsernamePasswordAuthenticationToken(email, mdp, new ArrayList<>());
-                SecurityContextHolder.getContext().setAuthentication(auth);
-
-                return ResponseEntity.ok().body(response);
-            } else {
-                // Password does not match
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "invalid");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-            }
-        } else {
-            // User not found
+        if (!userOptional.isPresent()) {
             Map<String, String> response = new HashMap<>();
-            response.put("message", "User not found");
+            response.put("erreur", "E-mail introuvable");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
+        banquiers user = userOptional.get();
+        if (!user.getMdp().equals(mdp)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("erreur", "Mot de passe incorrect");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Connecté avec succès");
+        response.put("user", user);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(email, mdp, new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        return ResponseEntity.ok().body(response);
     }
+
     @CrossOrigin(origins = "http://localhost:4200")
 @GetMapping("/affBanquiers")
     public List<banquiers> getAllBanquier(){
@@ -89,9 +83,9 @@ public class BanquiersController {
                 return ResponseEntity.notFound().build();
             }
             banquiersRepository.deleteById(email);
-            return ResponseEntity.ok().body("Banquier deleted successfully");
+            return ResponseEntity.ok().body("Le banquier est supprimé avec succès");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting banquier: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la suppression du banquier:" + e.getMessage());
         }
     }
 }
