@@ -28,25 +28,28 @@ import { ListeclientsComponent } from './listeclients/listeclients.component';
 import { clientAuthGuard } from './client-auth.guard';
 import { banquierAuthGuard } from './banquier-auth.guard';
 import { authAdminGuard } from './auth-admin.guard';
+import { authBqGuard } from './auth-bq.guard';
+import { authclientGuard } from './authclient.guard';
+import { authadminsGuard } from './authadmin.guard';
 const routes: Routes = [
   {path:'',component:AccueilComponent},
   { path: 'banques', component: BanquesComponent },
 {path:'cours',component:CoursComponent},
-{path:'administration',component:AdministrationComponent},
+{path:'administration',component:AdministrationComponent,canActivate: [authadminsGuard]},
 {path:'forum',component:ForumComponent},
-{ path: 'portailC', component: PortailClientComponent},
-{path:'portailB',component:PortailBanquiersComponent},
+{ path: 'portailC', component: PortailClientComponent,canActivate: [authclientGuard]},
+{path:'portailB',component:PortailBanquiersComponent, canActivate: [authBqGuard]},
 {path:'registerC',component:RegisterComponent},
 { path: 'portailCL', component: PortailCLoggedComponent, canActivate: [clientAuthGuard] },
 {path:'gestionCompte',component:GestionCompteComponent},
-{path:'gestionAnnonces',component:GestionAnnoncesComponent},
+{path:'gestionAnnonces',component:GestionAnnoncesComponent, canActivate: [clientAuthGuard]},
 {path:'convert',component:ConvertisseurComponent},
 {path:'devise',component:DeviseComponent},
 { path:'verify-email/:token', component: VerifyEmailComponent },
-{path:'corps',component:CorpsGestionannoncesComponent},
-{path:'historiques',component:HistoriquesComponent},
+{path:'corps',component:CorpsGestionannoncesComponent, canActivate: [clientAuthGuard]},
+{path:'historiques',component:HistoriquesComponent, canActivate: [clientAuthGuard]},
 {path:'portailBlogged',component:PortailBloggedComponent, canActivate: [banquierAuthGuard] },
-{path:'ForumE',component:ForumEveryoneComponent},
+{path:'ForumE',component:ForumEveryoneComponent, canActivate: [clientAuthGuard,banquierAuthGuard]},
 {path:'post/:id',component:PostDetailsComponent},
 {path:'forget',component:ForgotPasswordComponent},
 {path:'resetpassword/:token',component:ResetPasswordComponent},
