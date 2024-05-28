@@ -27,8 +27,10 @@ login(): void {
           message = "Le mot de passe est incorrect.";
         } else if (error.status === 404) {
           message = 'Utilisateur non trouvé.';
+        }else if (error.status === 403) {
+          alert('Votre compte n\'est pas encore vérifié. Veuillez vérifier votre e-mail pour le processus de vérification.');
         }
-        alert(message);
+       // alert(message);
       }
     );
   } else {

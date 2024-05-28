@@ -16,7 +16,7 @@ constructor(private httpclient: HttpClient,private authService:AuthentificationS
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn;
-this.cin=localStorage.getItem('cin');
+this.cin=sessionStorage.getItem('cin');
     this.getAnnonces();
 
   }

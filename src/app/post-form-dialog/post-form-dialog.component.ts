@@ -29,11 +29,10 @@ export class PostFormDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.email = localStorage.getItem('email')!; 
+    this.email = sessionStorage.getItem('email')!; 
     this.idA = this.data.idA;
   }
 
-  // Validation function
   validateForm(): boolean {
     if (this.taux == null || this.taux <= 0) {
       this.errorMessage = 'Le taux ne doit pas être nul, négatif ou égal à zéro';
@@ -62,12 +61,12 @@ export class PostFormDialogComponent implements OnInit {
       .post('http://localhost:8080/api/v1/annoncesB/add', this.annoncesData)
       .subscribe({
         next: (response) => {
-          console.log('Success:', response);
+          console.log('Succès:', response);
           this.dialogRef.close();
           window.location.reload();
         },
         error: (error) => {
-          console.error('Error adding:', error);
+          console.error("Erreur lors de l'ajout:", error);
           if (error.status === 400) {
             alert(error.error);
           } else {

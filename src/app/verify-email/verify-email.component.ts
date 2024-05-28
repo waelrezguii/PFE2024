@@ -20,26 +20,26 @@ export class VerifyEmailComponent implements OnDestroy {
       if (this.token) {
         this.verifyEmail();
       } else {
-        console.error('Error: token is undefined');
+        console.error("Erreur: le jeton n'est pas défini");
       }
     });
   }
 
   verifyEmail(): void {
     if (!this.token) {
-      this.errorMessage = 'The verification token is missing. Please try registering again.';
+      this.errorMessage = 'Le jeton de vérification est manquant. Veuillez réessayer de vous inscrire.';
       return;
     }
   
     this.emailVerificationSubscription = this.authService.verifyEmailToken(this.token).subscribe({
       next: (response: any) => {
-        console.log('Email verified successfully', response);
+        console.log('E-mail vérifié avec succès', response);
         this.verified = true;
     
         this.router.navigate(['/portailC']);
       },
       error: (error: any) => {
-        console.error('Error verifying email:', error);
+        console.error("Erreur lors de la vérification de l'e-mail :", error);
         this.verified = false;
         this.errorMessage = error.message;
       }

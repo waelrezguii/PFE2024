@@ -43,11 +43,11 @@ export class BanqueSupprimerFormDialogComponent implements OnInit {
         this.http.delete(`http://localhost:8080/api/v1/banque/supprimerBanque/${codeBValue}`)
           .subscribe({
             next: (response) => {
-              console.log('Banque deleted successfully:', response);
+              console.log('Banque supprimée avec succès:', response);
               this.dialogRef.close(true); 
             },
             error: (error) => {
-              console.error('Error deleting banque:', error);
+              console.error('Erreur lors de la suppression de la banque:', error);
             }
           });
       }

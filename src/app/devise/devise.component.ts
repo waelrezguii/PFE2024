@@ -36,7 +36,7 @@ Ajouter(): void {
   });
 
   dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed');
+    console.log('La boîte de dialogue a été fermée');
     this.LoadDevises();
   });
 }

@@ -41,7 +41,7 @@ export class BanquesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('La boîte de dialogue a été fermée');
       this.getBanques();
     });
   }
@@ -52,7 +52,7 @@ export class BanquesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('La boîte de dialogue a été fermée');
       this.getBanques();
     });
   }
@@ -60,11 +60,11 @@ export class BanquesComponent implements OnInit {
     this.httpclient.delete('http://localhost:8080/api/v1/banque/supprimerBanque/' + codeB, { responseType: 'text' })
       .subscribe({
         next: (response) => {
-          console.log('Banque deleted successfully:', response);
+          console.log('Banque supprimée avec succès:', response);
           this.getBanques(); 
         },
         error: (error) => {
-          console.error('Error occurred while deleting the banque:', error);
+          console.error("Une erreur s'est produite lors de la suppression de la banque:", error);
         }
       });
   }

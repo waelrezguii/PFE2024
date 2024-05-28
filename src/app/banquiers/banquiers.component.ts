@@ -24,7 +24,7 @@ export class BanquiersComponent implements OnInit {
         this.isDataLoaded = true; 
       },
       error => {
-        console.error('Error fetching banquiers:', error);
+        console.error('Erreur lors de la récupération des banquiers:', error);
         this.isDataLoaded = false; 
       }
     );
@@ -38,8 +38,8 @@ export class BanquiersComponent implements OnInit {
           this.fetchBanquiers();
         },
         error: (error) => {
-          console.error('Error deleting banquier:', error);
-          alert('Failed to delete banquier');
+          console.error('Erreur lors de la suppression du banquier:', error);
+          alert('Échec de la suppression du banquier');
         }
       });
   }

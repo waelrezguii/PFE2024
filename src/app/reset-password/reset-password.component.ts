@@ -26,12 +26,12 @@ export class ResetPasswordComponent implements OnInit {
   resetPassword() {
     this.authService.resetPassword(this.token, this.newPassword).subscribe({
       next: () => {
-        this.message = 'Password has been reset successfully.';
+        this.message = 'Le mot de passe a été réinitialisé avec succès.';
         this.isError = false;
         this.router.navigate(['/portailC']); 
       },
       error: (error) => {
-        this.message = 'Failed to reset password. ' + error.error.message;
+        this.message = 'Échec de la réinitialisation du mot de passe. ' + error.error.message;
         this.isError = true;
       }
     });

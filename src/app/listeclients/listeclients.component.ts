@@ -24,7 +24,7 @@ export class ListeclientsComponent {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error fetching clients:', err);
+        console.error('Erreur lors de la récupération des clients:', err);
         this.isLoading = false;
       }
     });
@@ -32,23 +32,23 @@ export class ListeclientsComponent {
   onUpdate(client: Utilisateur): void {
     this.http.put<Utilisateur>(`${this.apiUrl}/update/${client.cin}`, client).subscribe({
       next: (response) => {
-        alert('Client updated successfully!');
+        alert('Client mis à jour avec succès!');
       },
       error: (error) => {
-        console.error('Error updating client:', error);
-        alert('Failed to update client.');
+        console.error('Erreur lors de la mise à jour du client:', error);
+        alert('Échec de la mise à jour du client.');
       }
     });
   }
   onDelete(cin: string): void {
     this.http.delete(`${this.apiUrl}/delete/${cin}`).subscribe({
       next: () => {
-        alert('Client deleted successfully!');
+        alert('Client supprimé avec succès!');
         this.fetchClients(); 
       },
       error: (error) => {
-        console.error('Error deleting client:', error);
-        alert('Failed to delete client.');
+        console.error('Erreur lors de la suppression du client:', error);
+        alert('Échec de la suppression du client.');
       }
     });
   }

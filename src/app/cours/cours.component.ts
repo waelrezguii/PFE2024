@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { devise } from './devise1.module';
 import { AuthentificationService } from '../authentification.service';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-cours',
@@ -101,31 +102,40 @@ export class CoursComponent implements OnInit {
     return parseFloat((item.vente * this.money).toFixed(2));
     }
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
+    onFileSelected(event: any): void {
+      const file = event.target.files[0];
+      if (file) {
+        const extension = file.name.split('.').pop().toLowerCase();
+        if (extension !== 'csv') {
+          alert('Veuillez sélectionner un fichier CSV.');
+          this.selectedFile = null;
+        } else {
+          this.selectedFile = file;
+        }
+      }
     }
-  }
+    
 
-  uploadCSV(): void {
-    if (!this.selectedFile) {
-      alert('Veuillez sélectionner un fichier CSV à télécharger.');
-      return;
+    uploadCSV(): void {
+      if (!this.selectedFile) {
+        alert('Veuillez sélectionner un fichier CSV à importer.');
+        return;
+      }
+    
+   
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+    
+      const url = 'http://localhost:8080/api/v1/Cours/uploadCSV';
+    
+      this.http.post(url, formData, { responseType: 'text' })
+        .subscribe(response => {
+          console.log(response);
+          alert(response);
+        }, error => {
+          console.error(error);
+          alert("Erreur lors de l'importation du fichier. Veuillez réessayer.");
+        });
     }
-
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-
-    const url = `http://localhost:8080/api/v1/Cours/uploadCSV`;
-
-    this.http.post(url, formData, { responseType: 'text' })
-      .subscribe(response => {
-        console.log(response);
-        alert(response);
-      }, error => {
-        console.error(error);
-        alert('Erreur lors du téléchargement du fichier. Veuillez réessayer.');
-      });
-  }
+ 
 }

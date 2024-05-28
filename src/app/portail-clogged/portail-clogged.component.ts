@@ -14,8 +14,8 @@ export class PortailCLoggedComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.isLoggedInC) {
-      this.nom = localStorage.getItem('nom');
-      this.prenom = localStorage.getItem('prenom');
+      this.nom = sessionStorage.getItem('nom');
+      this.prenom = sessionStorage.getItem('prenom');
     }
   }
 

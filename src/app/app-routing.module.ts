@@ -49,7 +49,7 @@ const routes: Routes = [
 {path:'corps',component:CorpsGestionannoncesComponent, canActivate: [clientAuthGuard]},
 {path:'historiques',component:HistoriquesComponent, canActivate: [clientAuthGuard]},
 {path:'portailBlogged',component:PortailBloggedComponent, canActivate: [banquierAuthGuard] },
-{path:'ForumE',component:ForumEveryoneComponent, canActivate: [clientAuthGuard,banquierAuthGuard]},
+{path:'ForumE',component:ForumEveryoneComponent, canActivate: [clientAuthGuard]},
 {path:'post/:id',component:PostDetailsComponent},
 {path:'forget',component:ForgotPasswordComponent},
 {path:'resetpassword/:token',component:ResetPasswordComponent},

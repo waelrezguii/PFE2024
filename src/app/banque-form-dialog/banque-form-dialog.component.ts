@@ -43,11 +43,11 @@ export class BanqueFormDialogComponent implements OnInit {
     this.http.post('http://localhost:8080/api/v1/banquiers/ajouterBanquiers', this.banqueData)
       .subscribe({
         next: response => {
-          console.log('Banque added successfully:', response);
+          console.log('Banque ajoutée avec succès:', response);
           this.dialogRef.close();
         },
         error: error => {
-          console.error('Error adding banque:', error);
+          console.error("Erreur lors de l'ajout de la banque :", error);
         }
       });
     console.log(this.banqueData);

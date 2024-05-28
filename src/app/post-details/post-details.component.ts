@@ -33,7 +33,7 @@ export class PostDetailsComponent implements OnInit {
       if (this.idA) {
         this.getAnnonces();
       } else {
-        console.error('Invalid idA in the URL');
+        console.error("IDA invalide dans l'URL");
       }
     });
   }
@@ -45,7 +45,7 @@ export class PostDetailsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('La boîte de dialogue a été fermée');
     });
   }
 
@@ -63,7 +63,7 @@ export class PostDetailsComponent implements OnInit {
           this.router.navigate(['/ForumE']);
         },
         error: (error) => {
-          console.error('Error accepting announcement:', error);
+          console.error("Erreur lors de l'acceptation de l'annonce :", error);
         },
       });
   }

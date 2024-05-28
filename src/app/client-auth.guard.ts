@@ -13,10 +13,10 @@ export class clientAuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.isLoggedInC) {
+    if (this.authService.isLoggedInC || this.authService.isLoggedInB ) {
       return true;
     } else {
-      this.router.navigate(['/portailC']);
+      this.router.navigate([this.authService.isLoggedInC ? '/portailC' : 'portailB']);
       return false;
     }
   }

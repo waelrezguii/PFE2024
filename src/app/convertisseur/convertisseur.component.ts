@@ -11,7 +11,7 @@ export class ConvertisseurComponent implements OnInit {
   exchangeRates: any;
   conversionForm: FormGroup;
   convertedValue: number = 0;
-
+converteddev:any;
   constructor(private converter: ConverterService, private formBuilder: FormBuilder) {
     this.conversionForm = this.formBuilder.group({
       amount: [null, [Validators.required, Validators.min(0.01)]],
@@ -47,7 +47,7 @@ export class ConvertisseurComponent implements OnInit {
   
     const fromRate = this.exchangeRates.rates[fromCurrency];
     const toRate = this.exchangeRates.rates[toCurrency];
-  
+  this.converteddev=toCurrency;
     if (fromRate && toRate) {
       this.convertedValue = parseFloat(((amount / fromRate) * toRate).toFixed(2));
     } else {

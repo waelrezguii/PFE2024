@@ -17,7 +17,7 @@ export class ForumEveryoneComponent implements OnInit {
   constructor(private httpclient:HttpClient,private authService: AuthentificationService,private router: Router){}
   ngOnInit(): void {
     if (this.authService.isLoggedInC) {
-      this.cin = localStorage.getItem('cin');
+      this.cin = sessionStorage.getItem('cin');
     }
     this.isLoggedInB=this.authService.isLoggedInB;
     this.getAnnoncesC();

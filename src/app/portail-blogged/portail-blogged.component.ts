@@ -14,7 +14,7 @@ constructor(private authService:AuthentificationService){
   }
 
   getAdminB(): string {
-    const user = JSON.parse(localStorage.getItem('user2') || '{}');
+    const user = JSON.parse(sessionStorage.getItem('user2') || '{}');
     if (user.banque.codeB) {
       return `Bienvenue, Admin ${user.banque.codeB} !`;
     } else {
