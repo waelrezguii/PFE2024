@@ -124,6 +124,11 @@ private PasswordResetTokenRepository passwordResetTokenRepository;
         }
 
         utilisateur user = userOptional.get();
+        if (!user.isVerified()) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Le compte n'est pas vérifié.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
         if (!user.getMdp().equals(mdp)) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Le mot de passe est incorrect.");

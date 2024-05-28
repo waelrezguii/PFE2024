@@ -103,15 +103,27 @@ public class CoursController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/uploadCSV")
-    public String uploadCoursCSV(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadCoursCSV(@RequestParam("file") MultipartFile file) {
+        // Check if the file is empty
+        if (file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur:Aucun fichier fourni");
+        }
+
+        // Check the file type
+        String contentType = file.getContentType();
+        if (!"text/csv".equals(contentType) && !"application/vnd.ms-excel".equals(contentType)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: le fichier n'est pas un CSV");
+        }
+
         try {
             coursImportService.importCSV(file);
-            return "Le fichier a été ajouté avec succès!";
+            return ResponseEntity.ok("Le fichier a été ajouté avec succès!");
         } catch (Exception e) {
-            return "Error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur: " + e.getMessage());
         }
     }
-    }
+
+}
 
 
 
